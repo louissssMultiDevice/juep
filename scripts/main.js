@@ -260,16 +260,16 @@ class MainApp {
         // Check authentication status
         if (window.authSystem) {
             // If on login page and already logged in, redirect to dashboard
-            if (window.location.pathname.includes('index.html') && authSystem.isLoggedIn) {
-                window.location.href = 'dashboard.html';
+            if (window.location.pathname.includes('index') && authSystem.isLoggedIn) {
+                window.location.href = 'dashboard';
             }
             
             // If on protected page and not logged in, redirect to login
-            const protectedPages = ['dashboard.html', 'profile.html', 'class-7f.html'];
+            const protectedPages = ['dashboard', 'profile', 'docs'];
             const currentPage = window.location.pathname.split('/').pop();
             
             if (protectedPages.includes(currentPage) && !authSystem.isLoggedIn) {
-                window.location.href = 'index.html';
+                window.location.href = 'index';
             }
             
             // Update UI if logged in
