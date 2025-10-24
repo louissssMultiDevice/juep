@@ -587,7 +587,29 @@
                     <span>atau</span>
                 </div>
 
-                <button type="button" class="btn btn-google btn-block" id="googleLogin">
+                 <!-- TOMBOL GOOGLE SIGN-IN -->
+                <!-- GANTI Client ID di bagian data-client_id -->
+                <div class="google-btn-container">
+                    <div id="g_id_onload"
+                         data-client_id="732926475897-bep4e4qg150gvtqfrtbjfda34fc2cdtb.apps.googleusercontent.com"
+                         data-context="signin"
+                         data-ux_mode="popup"
+                         data-callback="handleGoogleLogin"
+                         data-auto_prompt="false">
+                    </div>
+
+                    <div class="g_id_signin"
+                         data-type="standard"
+                         data-shape="rectangular"
+                         data-theme="outline"
+                         data-text="signin_with"
+                         data-size="large"
+                         data-logo_alignment="left">
+                    </div>
+                </div>
+
+                <!-- Fallback tombol Google jika JavaScript tidak bekerja -->
+                <button type="button" class="btn-google-custom" id="googleFallback" style="display: none;">
                     <i class="fab fa-google"></i> Login dengan Google
                 </button>
 
@@ -808,7 +830,7 @@
                     this.updateUI();
                     
                     // Redirect jika di halaman login
-                    if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/')) {
+                    if (window.location.pathname.includes('index') || window.location.pathname.endsWith('/')) {
                         this.redirectToDashboard();
                     }
                 } else {
@@ -839,7 +861,7 @@
             }
 
             protectRoutes() {
-                const publicPages = ['index.html', ''];
+                const publicPages = ['index', ''];
                 const currentPage = window.location.pathname.split('/').pop();
                 
                 if (!publicPages.includes(currentPage) && !this.isLoggedIn) {
@@ -1018,10 +1040,10 @@
                 
                 if (this.otpMethod === 'whatsapp') {
                     label.innerHTML = '<i class="fas fa-phone"></i> Nomor WhatsApp';
-                    input.placeholder = 'Contoh: 628123456789';
+                    input.placeholder = '6287717274346';
                 } else {
                     label.innerHTML = '<i class="fas fa-envelope"></i> Email';
-                    input.placeholder = 'Masukkan email Anda';
+                    input.placeholder = 'fikastore.cs@gmail.com';
                 }
             }
 
@@ -1419,7 +1441,7 @@
                 this.showNotification(`Selamat datang ${userData.fullName || userData.username}!`, 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard';
                 }, 1500);
             }
 
@@ -1455,13 +1477,13 @@
 
             redirectToDashboard() {
                 if (!window.location.pathname.includes('dashboard.html')) {
-                    window.location.href = 'dashboard.html';
+                    window.location.href = 'dashboard';
                 }
             }
 
             redirectToLogin() {
                 if (!window.location.pathname.includes('index.html')) {
-                    window.location.href = 'index.html';
+                    window.location.href = 'index';
                 }
             }
 
@@ -1474,7 +1496,7 @@
                 if (!window.location.pathname.includes('index.html')) {
                     this.showNotification('Sesi telah berakhir, silakan login kembali', 'warning');
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = 'index';
                     }, 2000);
                 }
             }
