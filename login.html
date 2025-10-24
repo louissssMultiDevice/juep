@@ -320,6 +320,7 @@
             
             setTimeout(() => {
                 if (username && password) {
+                    window.location.href = 'dashboard.html';
                     showAlert('Login berhasil! Mengarahkan ke dashboard...', 'success');
                     
                     setTimeout(() => {
@@ -345,9 +346,8 @@
         });
 
         // Event listener untuk link daftar
-        document.getElementById('showRegister').addEventListener('click', function(e) {
-            e.preventDefault();
-            showAlert('Fitur pendaftaran akan segera hadir!', 'info');
+         window.location.href = 'register.html';
+            showAlert('Mengarahkan Ke Pages Pendaftaran..', 'info');
         });
 
         // Fungsi untuk menangani login Google yang berhasil
@@ -365,6 +365,7 @@
             
             // Redirect setelah 2 detik
             setTimeout(() => {
+                window.location.href = 'dashboard.html';
                 showAlert('Mengarahkan ke dashboard...', 'info');
             }, 2000);
         }
