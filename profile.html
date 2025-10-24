@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Sekolah Cerdas</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Sekolah Cerdas</h1>
+                </div>
+                <nav class="main-nav">
+                    <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="docs" class="nav-link"><i class="fas fa-door-open"></i> Kelas 7F</a>
+                    <a href="profile" class="nav-link active"><i class="fas fa-user"></i> Profile</a>
+                </nav>
+                <div class="header-controls">
+                    <div class="control-item">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <span id="batteryLevel">Loading...</span>
+                    </div>
+                    <div class="control-item">
+                        <i class="fas fa-wifi"></i>
+       script                 <span id="ipAddress">192.168.1.105</span>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="profile-layout">
+                <!-- Sidebar -->
+                <aside class="profile-sidebar">
+                    <!-- User Profile Card -->
+                    <div class="profile-card">
+                        <div class="profile-avatar-section">
+                            <img src="" alt="Profile" class="profile-avatar" id="profileAvatar">
+                            <div class="online-status"></div>
+                            <button class="avatar-edit" id="editAvatar"><i class="fas fa-camera"></i></button>
+                        </div>
+                        <div class="profile-info">
+                            <h2 id="profileName">Loading...</h2>
+                            <p class="profile-role" id="profileRole">Siswa</p>
+                            <p class="profile-email" id="profileEmail">Loading...</p>
+                        </div>
+                        
+                        <!-- Realistic Battery Indicator -->
+                        <div class="battery-widget">
+                            <div class="battery-header">
+                                <i class="fas fa-battery-full"></i>
+                                <span>Baterai Perangkat</span>
+                            </div>
+                            <div class="battery-container">
+                                <div class="battery">
+                                    <div class="battery-level" id="batteryLevelIndicator">
+                                        <div class="battery-fill" id="batteryFill"></div>
+                                        <div class="battery-liquid" id="batteryLiquid"></div>
+                                    </div>
+                                    <div class="battery-tip"></div>
+                                </div>
+                                <div class="battery-info">
+                                    <span class="battery-percent" id="batteryPercent">75%</span>
+                                    <span class="battery-status" id="batteryStatus">Mengisi Daya</span>
+                                </div>
+                            </div>
+                            <div class="battery-stats">
+                                <div class="battery-stat">
+                                    <span>Waktu Tersisa</span>
+                                    <span id="batteryTime">4j 12m</span>
+                                </div>
+                                <div class="battery-stat">
+                                    <span>Kesehatan</span>
+                                    <span id="batteryHealth">96%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Info Card -->
+                    <div class="system-info-card">
+                        <h3>Informasi Sistem</h3>
+                        <div class="system-info">
+                            <div class="info-item">
+                                <i class="fas fa-user-circle"></i>
+                                <div>
+                                    <span class="info-label">Username</span>
+                                    <span class="info-value" id="profileUsername">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <span class="info-label">Gmail</span>
+                                    <span class="info-value" id="profileGmail">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div>
+                                    <span class="info-label">Lokasi</span>
+                                    <span class="info-value" id="profileLocation">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <span class="info-label">Terakhir Login</span>
+                                    <span class="info-value" id="lastLoginTime">-</span>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <div>
+                                    <span class="info-label">Total Login</span>
+                                    <span class="info-value" id="totalLogins">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="profile-content">
+                    <!-- Statistics Section -->
+                    <section class="profile-section">
+                        <div class="section-header">
+                            <h2>Statistik Pengguna</h2>
+                            <p>Data aktivitas dan performa Anda</p>
+                        </div>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-comment"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="statMessages">0</h3>
+                                    <p>Pesan Dikirim</p>
+                                    <div class="stat-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 75%"></div>
+                                        </div>
+                                        <span>75%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-tasks"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="statTasks">0</h3>
+                                    <p>Tugas Diselesaikan</p>
+                                    <div class="stat-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 60%"></div>
+                                        </div>
+                                        <span>60%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="statAttendance">0%</h3>
+                                    <p>Kehadiran</p>
+                                    <div class="stat-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 85%"></div>
+                                        </div>
+                                        <span>85%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="statPerformance">0%</h3>
+                                    <p>Performa Akademik</p>
+                                    <div class="stat-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 78%"></div>
+                                        </div>
+                                        <span>78%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="charts-container">
+                            <div class="chart-card">
+                                <h4>Aktivitas Mingguan</h4>
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                            <div class="chart-card">
+                                <h4>Distribusi Waktu</h4>
+                                <canvas id="timeChart"></canvas>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Account Settings -->
+                    <section class="profile-section">
+                        <div class="section-header">
+                            <h2>Pengaturan Akun</h2>
+                            <p>Kelola informasi dan keamanan akun Anda</p>
+                        </div>
+
+                        <form class="profile-form" id="profileForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fullName">Nama Lengkap</label>
+                                    <input type="text" id="fullName" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" class="form-control" readonly>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Nomor Telepon</label>
+                                    <input type="tel" id="phone" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Simpan Perubahan
+                                </button>
+                                <button type="button" class="btn btn-secondary" id="resetForm">
+                                    <i class="fas fa-undo"></i> Reset
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Password Change -->
+                    <section class="profile-section">
+                        <div class="section-header">
+                            <h2>Ubah Password</h2>
+                            <p>Perbarui kata sandi untuk keamanan akun</p>
+                        </div>
+
+                        <form class="password-form" id="passwordForm">
+                            <div class="form-group">
+                                <label for="currentPassword">Password Saat Ini</label>
+                                <input type="password" id="currentPassword" class="form-control" required>
+                                <div class="password-strength" id="currentPasswordStrength"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="newPassword">Password Baru</label>
+                                <input type="password" id="newPassword" class="form-control" required>
+                                <div class="password-strength" id="newPasswordStrength">
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                    <div class="strength-bar"></div>
+                                </div>
+                                <div class="password-requirements">
+                                    <p>Password harus mengandung:</p>
+                                    <ul>
+                                        <li id="reqLength">Minimal 8 karakter</li>
+                                        <li id="reqUpper">Huruf besar</li>
+                                        <li id="reqLower">Huruf kecil</li>
+                                        <li id="reqNumber">Angka</li>
+                                        <li id="reqSpecial">Karakter khusus</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="confirmPassword">Konfirmasi Password Baru</label>
+                                <input type="password" id="confirmPassword" class="form-control" required>
+                                <div class="password-match" id="passwordMatch"></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-key"></i> Ubah Password
+                                </button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <!-- Account Actions -->
+                    <section class="profile-section">
+                        <div class="section-header">
+                            <h2>Aksi Akun</h2>
+                            <p>Kelola status akun Anda</p>
+                        </div>
+
+                        <div class="account-actions">
+                            <button class="btn btn-danger" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                            <button class="btn btn-warning" id="deleteAccount">
+                                <i class="fas fa-trash"></i> Hapus Akun
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="script/utils.js"></script>nya 
+</body>
+</html>

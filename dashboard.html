@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sekolah Cerdas</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h1>Sekolah Cerdas</h1>
+                </div>
+                <nav class="main-nav">
+                    <a href="dashboard-enhanced.html" class="nav-link active"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="docs" class="nav-link"><i class="fas fa-door-open"></i> Kelas 7F</a>
+                    <a href="profile" class="nav-link"><i class="fas fa-user"></i> Profile</a>
+                </nav>
+                <div class="header-controls">
+                    <div class="control-item">
+                        <i class="fas fa-battery-three-quarters"></i>
+                        <span id="batteryLevel">Loading...</span>
+                    </div>
+                    <div class="control-item">
+                        <i class="fas fa-wifi"></i>
+                        <span id="ipAddress">192.168.1.105</span>
+                    </div>
+                    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Real-time Info Bar -->
+            <div class="info-bar">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <span class="info-label">Waktu Server</span>
+                        <span class="info-value" id="serverTime">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <div>
+                        <span class="info-label">Hari & Tanggal</span>
+                        <span class="info-value" id="currentDate">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div>
+                        <span class="info-label">Lokasi</span>
+                        <span class="info-value" id="userLocation">Loading...</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-heartbeat"></i>
+                    <div>
+                        <span class="info-label">Uptime</span>
+                        <span class="info-value" id="uptimeCounter">00:00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <h2>Selamat Datang, <span id="welcomeUsername">User</span>! 👋</h2>
+                        <p>Sistem Manajemen Sekolah Digital - Dashboard Real-time</p>
+                        <div class="welcome-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-server"></i>
+                                <div>
+                                    <span class="stat-number" id="onlineUsers">0</span>
+                                    <span class="stat-label">Online</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-bolt"></i>
+                                <div>
+                                    <span class="stat-number" id="responseTime">0ms</span>
+                                    <span class="stat-label">Response</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <span class="stat-number">100%</span>
+                                    <span class="stat-label">Secure</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="welcome-illustration">
+                        <div class="pulse-animation"></div>
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Status -->
+            <section class="system-status-section">
+                <h3 class="section-title">Status Sistem</h3>
+                <div class="status-grid">
+                    <div class="status-card">
+                        <div class="status-icon online">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Web Server</h4>
+                            <p class="status-text">Online</p>
+                            <span class="status-desc">Response: <span id="serverResponse">25ms</span></span>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon online">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Database</h4>
+                            <p class="status-text">Optimal</p>
+                            <span class="status-desc">Queries: <span id="dbQueries">142/min</span></span>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon online">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Jaringan</h4>
+                            <p class="status-text">Stabil</p>
+                            <span class="status-desc">Ping: <span id="networkPing">12ms</span></span>
+                        </div>
+                    </div>
+                    <div class="status-card">
+                        <div class="status-icon online">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="status-content">
+                            <h4>Keamanan</h4>
+                            <p class="status-text">Aman</p>
+                            <span class="status-desc">Threats: <span id="securityThreats">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Stats -->
+            <section class="stats-section">
+                <h3 class="section-title">Statistik Cepat</h3>
+                <div class="stats-grid">
+                    <div class="stat-card large">
+                        <div class="stat-header">
+                            <h4>Penggunaan Sistem</h4>
+                            <div class="stat-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>12%</span>
+                            </div>
+                        </div>
+                        <div class="stat-chart">
+                            <canvas id="usageChart"></canvas>
+                        </div>
+                        <div class="stat-footer">
+                            <span>Peningkatan penggunaan minggu ini</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stats-column">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalStudents">32</h3>
+                                <p>Total Siswa</p>
+                                <div class="stat-change up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>2 baru</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="totalTeachers">5</h3>
+                                <p>Guru Aktif</p>
+                                <div class="stat-change neutral">
+                                    <i class="fas fa-minus"></i>
+                                    <span>stabil</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="activeTasks">18</h3>
+                                <p>Tugas Aktif</p>
+                                <div class="stat-change up">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>3 baru</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h3 class="section-title">Aktivitas Terkini</h3>
+                <div class="activity-timeline">
+                    <div class="activity-item">
+                        <div class="activity-icon new-user">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>User baru bergabung</h4>
+                            <p>Andi Pratama bergabung ke kelas 7F</p>
+                            <span class="activity-time" data-time="2024-01-15T10:30:00">2 jam yang lalu</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon task">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Tugas baru ditambahkan</h4>
+                            <p>Matematika - Bab Aljabar</p>
+                            <span class="activity-time" data-time="2024-01-15T08:15:00">4 jam yang lalu</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon event">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <h4>Acara baru dijadwalkan</h4>
+                            <p>Study Tour ke Museum Nasional</p>
+                            <span class="activity-time" data-time="2024-01-14T16:45:00">1 hari yang lalu</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Battery & System Info -->
+            <section class="system-info-section">
+                <h3 class="section-title">Info Perangkat</h3>
+                <div class="system-cards">
+                    <div class="system-card">
+                        <div class="system-header">
+                            <h4>Status Baterai</h4>
+                            <div class="battery-indicator">
+                                <div class="battery-level">
+                                    <div class="battery-fill" id="dashboardBatteryFill"></div>
+                                </div>
+                                <span id="dashboardBatteryPercent">75%</span>
+                            </div>
+                        </div>
+                        <div class="system-details">
+                            <div class="detail-item">
+                                <span>Status</span>
+                                <span id="batteryStatus">Mengisi Daya</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Waktu Tersisa</span>
+                                <span id="batteryTimeLeft">4j 12m</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Kesehatan</span>
+                                <span id="batteryHealth">96%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <h4>Informasi Jaringan</h4>
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="system-details">
+                            <div class="detail-item">
+                                <span>IP Address</span>
+                                <span id="networkIP">192.168.1.105</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Kecepatan</span>
+                                <span id="networkSpeed">72 Mbps</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Latensi</span>
+                                <span id="networkLatency">24ms</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="system-card">
+                        <div class="system-header">
+                            <h4>Informasi Website</h4>
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div class="system-details">
+                            <div class="detail-item">
+                                <span>Versi</span>
+                                <span>v2.1.0</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Uptime</span>
+                                <span id="websiteUptime">99.8%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>Pembuat</span>
+                                <span>Tim Developer 7F</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- AI Robot Assistant -->
+    <div class="robot-assistant">
+        <div class="robot" id="robotToggle">
+            <i class="fas fa-robot"></i>
+        </div>
+        <div class="robot-chat" id="robotChat">
+            <div class="chat-header">
+                <img src="https://ui-avatars.com/api/?name=AI+Assistant&background=4361ee&color=fff" alt="AI Assistant">
+                <div>
+                    <h4>AI Assistant</h4>
+                    <p class="status-online">Online</p>
+                </div>
+                <button class="chat-close" id="chatClose"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-content">
+                        Halo! Saya AI Assistant dashboard. Ada yang bisa saya bantu?
+                    </div>
+                    <span class="message-time">12:00</span>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Tanya tentang sistem...">
+                <button id="sendMessage"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/main.js"></script>
+    <script src="script/utils.js"></script>
+</body>
+</html>
