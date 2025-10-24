@@ -130,7 +130,7 @@ class EnhancedAuthSystem {
         this.showNotification(`Selamat datang kembali, ${userData.fullName}!`, 'success');
         
         setTimeout(() => {
-            window.location.href = 'dashboard.html';
+            window.location.href = 'dashboard';
         }, 1500);
     }
 
@@ -148,21 +148,21 @@ class EnhancedAuthSystem {
                 this.showNotification('Logout berhasil', 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = 'index';
                 }, 1000);
             }, 1000);
         }
     }
 
     redirectToDashboard() {
-        if (!window.location.pathname.includes('dashboard.html')) {
-            window.location.href = 'dashboard.html';
+        if (!window.location.pathname.includes('dashboard')) {
+            window.location.href = 'dashboard';
         }
     }
 
     redirectToLogin() {
-        if (!window.location.pathname.includes('index.html')) {
-            window.location.href = 'index.html';
+        if (!window.location.pathname.includes('index')) {
+            window.location.href = 'index';
         }
     }
 
@@ -172,10 +172,10 @@ class EnhancedAuthSystem {
         this.currentUser = null;
         this.isLoggedIn = false;
         
-        if (!window.location.pathname.includes('index.html')) {
+        if (!window.location.pathname.includes('index')) {
             this.showNotification('Sesi telah berakhir, silakan login kembali', 'warning');
             setTimeout(() => {
-                window.location.href = 'index.html';
+                window.location.href = 'index';
             }, 2000);
         }
     }
