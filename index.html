@@ -4,13 +4,548 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sekolah Cerdas</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/components.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --bg-color: #f5f7fb;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #f5f5f5;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .login-page {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .register-card, .otp-card, .forgot-password-card {
+            display: none;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--primary);
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        .login-form {
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .checkbox input {
+            display: none;
+        }
+
+        .checkbox input:checked + .checkmark {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkbox input:checked + .checkmark:after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-google {
+            background: #db4437;
+            color: white;
+        }
+
+        .btn-google:hover {
+            background: #c23321;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-whatsapp:hover {
+            background: #128C7E;
+        }
+
+        .btn-email {
+            background: #EA4335;
+            color: white;
+        }
+
+        .btn-email:hover {
+            background: #D14836;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: var(--card-bg);
+            padding: 0 1rem;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .otp-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .otp-input {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            background: var(--card-bg);
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .otp-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .resend-otp {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .resend-otp a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .resend-otp a:hover {
+            text-decoration: underline;
+        }
+
+        .resend-otp .disabled {
+            color: #999;
+            pointer-events: none;
+        }
+
+        .timer {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .method-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .method-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .method-btn.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .login-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        .floating-shapes {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float-shapes 20s infinite linear;
+        }
+
+        .shape-1 {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -10s;
+        }
+
+        .shape-4 {
+            width: 120px;
+            height: 120px;
+            top: 30%;
+            right: 20%;
+            animation-delay: -15s;
+        }
+
+        @keyframes float-shapes {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(15px) rotate(240deg);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 400px;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.error {
+            background: #ef4444;
+        }
+
+        .notification.warning {
+            background: #f59e0b;
+        }
+
+        .notification.info {
+            background: #3b82f6;
+        }
+
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 5px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .password-strength.weak .password-strength-bar {
+            background: #ef4444;
+            width: 25%;
+        }
+
+        .password-strength.medium .password-strength-bar {
+            background: #f59e0b;
+            width: 50%;
+        }
+
+        .password-strength.strong .password-strength-bar {
+            background: #10b981;
+            width: 75%;
+        }
+
+        .password-strength.very-strong .password-strength-bar {
+            background: #10b981;
+            width: 100%;
+        }
+
+        .password-requirements {
+            margin-top: 8px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .password-requirements ul {
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            margin-bottom: 4px;
+        }
+
+        .password-requirements li.valid {
+            color: #10b981;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .otp-input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
 </head>
 <body class="login-page">
     <div class="login-container">
+        <!-- Login Card -->
         <div class="login-card">
             <div class="login-header">
                 <div class="logo">
@@ -41,7 +576,7 @@
                         <span class="checkmark"></span>
                         Ingat saya
                     </label>
-                    <a href="#" class="forgot-password">Lupa password?</a>
+                    <a href="#" class="forgot-password" id="showForgotPassword">Lupa password?</a>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block btn-login">
@@ -56,8 +591,77 @@
                     <i class="fab fa-google"></i> Login dengan Google
                 </button>
 
+                <button type="button" class="btn btn-outline btn-block" id="showOTPLogin">
+                    <i class="fas fa-mobile-alt"></i> Login dengan OTP
+                </button>
+
                 <div class="login-footer">
                     <p>Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- OTP Login Card -->
+        <div class="login-card otp-card" id="otpCard">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h1>Login dengan OTP</h1>
+                </div>
+                <p>Masukkan nomor WhatsApp atau email untuk menerima OTP</p>
+            </div>
+
+            <form id="otpRequestForm" class="login-form">
+                <div class="method-selector">
+                    <div class="method-btn active" data-method="whatsapp">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </div>
+                    <div class="method-btn" data-method="email">
+                        <i class="fas fa-envelope"></i> Email
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="otpContact">
+                        <i class="fas fa-phone"></i> Nomor WhatsApp
+                    </label>
+                    <input type="text" id="otpContact" class="form-control" placeholder="Contoh: 628123456789" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-paper-plane"></i> Kirim OTP
+                </button>
+
+                <div class="login-footer">
+                    <p><a href="#" id="showLoginFromOTP">Kembali ke login biasa</a></p>
+                </div>
+            </form>
+
+            <form id="otpVerifyForm" class="login-form" style="display: none;">
+                <div class="form-group">
+                    <label>
+                        <i class="fas fa-shield-alt"></i> Masukkan Kode OTP
+                    </label>
+                    <div class="otp-inputs">
+                        <input type="text" class="otp-input" maxlength="1" data-index="0">
+                        <input type="text" class="otp-input" maxlength="1" data-index="1">
+                        <input type="text" class="otp-input" maxlength="1" data-index="2">
+                        <input type="text" class="otp-input" maxlength="1" data-index="3">
+                        <input type="text" class="otp-input" maxlength="1" data-index="4">
+                        <input type="text" class="otp-input" maxlength="1" data-index="5">
+                    </div>
+                </div>
+
+                <div class="resend-otp">
+                    <p>Tidak menerima kode? <a href="#" id="resendOTP">Kirim ulang <span class="timer">(60)</span></a></p>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-check"></i> Verifikasi OTP
+                </button>
+
+                <div class="login-footer">
+                    <p><a href="#" id="backToOTPRequest">Ganti metode</a></p>
                 </div>
             </form>
         </div>
@@ -88,10 +692,29 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="regPhone">
+                        <i class="fas fa-phone"></i> Nomor WhatsApp
+                    </label>
+                    <input type="text" id="regPhone" class="form-control" placeholder="Contoh: 628123456789" required>
+                </div>
+
+                <div class="form-group">
                     <label for="regPassword">
                         <i class="fas fa-lock"></i> Password
                     </label>
                     <input type="password" id="regPassword" class="form-control" placeholder="Masukkan password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar"></div>
+                    </div>
+                    <div class="password-requirements">
+                        <ul>
+                            <li id="req-length">Minimal 8 karakter</li>
+                            <li id="req-uppercase">Mengandung huruf besar</li>
+                            <li id="req-lowercase">Mengandung huruf kecil</li>
+                            <li id="req-number">Mengandung angka</li>
+                            <li id="req-special">Mengandung karakter khusus</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -101,12 +724,40 @@
                     <input type="password" id="regConfirmPassword" class="form-control" placeholder="Konfirmasi password" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-block btn-login">
+                <button type="submit" class="btn btn-primary btn-block">
                     <i class="fas fa-user-plus"></i> Daftar
                 </button>
 
                 <div class="login-footer">
-                    <p>Sudah punya akun? <a href="#" id="showLogin">Login di sini</a></p>
+                    <p>Sudah punya akun? <a href="#" id="showLoginFromRegister">Login di sini</a></p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Forgot Password Card -->
+        <div class="login-card forgot-password-card" id="forgotPasswordCard">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-key"></i>
+                    <h1>Reset Password</h1>
+                </div>
+                <p>Masukkan email untuk mereset password</p>
+            </div>
+
+            <form id="forgotPasswordForm" class="login-form">
+                <div class="form-group">
+                    <label for="resetEmail">
+                        <i class="fas fa-envelope"></i> Email
+                    </label>
+                    <input type="email" id="resetEmail" class="form-control" placeholder="Masukkan email terdaftar" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-paper-plane"></i> Kirim Link Reset
+                </button>
+
+                <div class="login-footer">
+                    <p><a href="#" id="showLoginFromForgot">Kembali ke login</a></p>
                 </div>
             </form>
         </div>
@@ -122,7 +773,912 @@
         </div>
     </div>
 
-    <script src="scripts/auth.js"></script>
-    <script src="scripts/main.js"></script>
+    <script>
+        // Advanced Authentication System with OTP
+        class AdvancedAuthSystem {
+            constructor() {
+                this.currentUser = null;
+                this.isLoggedIn = false;
+                this.sessionTimeout = 30 * 60 * 1000; // 30 menit
+                this.otpExpiry = 5 * 60 * 1000; // 5 menit
+                this.resendTimeout = 60; // detik
+                this.currentOTP = null;
+                this.otpContact = null;
+                this.otpMethod = 'whatsapp';
+                this.init();
+            }
+
+            init() {
+                this.checkAuthStatus();
+                this.setupEventListeners();
+                this.setupSessionMonitoring();
+                this.protectRoutes();
+                this.setupPasswordStrength();
+                this.setupOTPInputs();
+            }
+
+            checkAuthStatus() {
+                const userData = localStorage.getItem('currentUser');
+                const sessionExpiry = localStorage.getItem('sessionExpiry');
+                
+                if (userData && sessionExpiry && Date.now() < parseInt(sessionExpiry)) {
+                    this.currentUser = JSON.parse(userData);
+                    this.isLoggedIn = true;
+                    this.updateSessionExpiry();
+                    this.updateUI();
+                    
+                    // Redirect jika di halaman login
+                    if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/')) {
+                        this.redirectToDashboard();
+                    }
+                } else {
+                    this.handleSessionExpired();
+                }
+            }
+
+            setupSessionMonitoring() {
+                // Monitor user activity
+                document.addEventListener('mousemove', () => this.updateSessionExpiry());
+                document.addEventListener('keypress', () => this.updateSessionExpiry());
+                document.addEventListener('click', () => this.updateSessionExpiry());
+
+                // Check session every minute
+                setInterval(() => {
+                    const sessionExpiry = localStorage.getItem('sessionExpiry');
+                    if (sessionExpiry && Date.now() > parseInt(sessionExpiry)) {
+                        this.handleSessionExpired();
+                    }
+                }, 60000);
+            }
+
+            updateSessionExpiry() {
+                if (this.isLoggedIn) {
+                    const expiryTime = Date.now() + this.sessionTimeout;
+                    localStorage.setItem('sessionExpiry', expiryTime.toString());
+                }
+            }
+
+            protectRoutes() {
+                const publicPages = ['index.html', ''];
+                const currentPage = window.location.pathname.split('/').pop();
+                
+                if (!publicPages.includes(currentPage) && !this.isLoggedIn) {
+                    this.redirectToLogin();
+                }
+                
+                if (publicPages.includes(currentPage) && this.isLoggedIn) {
+                    this.redirectToDashboard();
+                }
+            }
+
+            setupEventListeners() {
+                // Login form
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                }
+
+                // Register form
+                const registerForm = document.getElementById('registerForm');
+                if (registerForm) {
+                    registerForm.addEventListener('submit', (e) => this.handleRegister(e));
+                }
+
+                // OTP Request form
+                const otpRequestForm = document.getElementById('otpRequestForm');
+                if (otpRequestForm) {
+                    otpRequestForm.addEventListener('submit', (e) => this.handleOTPRequest(e));
+                }
+
+                // OTP Verify form
+                const otpVerifyForm = document.getElementById('otpVerifyForm');
+                if (otpVerifyForm) {
+                    otpVerifyForm.addEventListener('submit', (e) => this.handleOTPVerify(e));
+                }
+
+                // Forgot Password form
+                const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+                if (forgotPasswordForm) {
+                    forgotPasswordForm.addEventListener('submit', (e) => this.handleForgotPassword(e));
+                }
+
+                // Google login
+                const googleLogin = document.getElementById('googleLogin');
+                if (googleLogin) {
+                    googleLogin.addEventListener('click', () => this.handleGoogleLogin());
+                }
+
+                // Show OTP login
+                const showOTPLogin = document.getElementById('showOTPLogin');
+                if (showOTPLogin) {
+                    showOTPLogin.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showOTPForm();
+                    });
+                }
+
+                // Show register form
+                const showRegister = document.getElementById('showRegister');
+                if (showRegister) {
+                    showRegister.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showRegisterForm();
+                    });
+                }
+
+                // Show login form from OTP
+                const showLoginFromOTP = document.getElementById('showLoginFromOTP');
+                if (showLoginFromOTP) {
+                    showLoginFromOTP.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showLoginForm();
+                    });
+                }
+
+                // Show login form from register
+                const showLoginFromRegister = document.getElementById('showLoginFromRegister');
+                if (showLoginFromRegister) {
+                    showLoginFromRegister.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showLoginForm();
+                    });
+                }
+
+                // Show forgot password
+                const showForgotPassword = document.getElementById('showForgotPassword');
+                if (showForgotPassword) {
+                    showForgotPassword.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showForgotPasswordForm();
+                    });
+                }
+
+                // Show login from forgot password
+                const showLoginFromForgot = document.getElementById('showLoginFromForgot');
+                if (showLoginFromForgot) {
+                    showLoginFromForgot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.showLoginForm();
+                    });
+                }
+
+                // Back to OTP request
+                const backToOTPRequest = document.getElementById('backToOTPRequest');
+                if (backToOTPRequest) {
+                    backToOTPRequest.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        document.getElementById('otpRequestForm').style.display = 'block';
+                        document.getElementById('otpVerifyForm').style.display = 'none';
+                    });
+                }
+
+                // Resend OTP
+                const resendOTP = document.getElementById('resendOTP');
+                if (resendOTP) {
+                    resendOTP.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.resendOTP();
+                    });
+                }
+
+                // Method selector
+                const methodBtns = document.querySelectorAll('.method-btn');
+                methodBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        methodBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.otpMethod = btn.getAttribute('data-method');
+                        this.updateOTPInputLabel();
+                    });
+                });
+            }
+
+            setupPasswordStrength() {
+                const passwordInput = document.getElementById('regPassword');
+                if (passwordInput) {
+                    passwordInput.addEventListener('input', () => {
+                        this.checkPasswordStrength(passwordInput.value);
+                    });
+                }
+            }
+
+            setupOTPInputs() {
+                const otpInputs = document.querySelectorAll('.otp-input');
+                
+                otpInputs.forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        const value = e.target.value;
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        
+                        // Auto focus next input
+                        if (value && index < 5) {
+                            otpInputs[index + 1].focus();
+                        }
+                        
+                        // Auto submit if last input filled
+                        if (value && index === 5) {
+                            document.getElementById('otpVerifyForm').dispatchEvent(new Event('submit'));
+                        }
+                    });
+                    
+                    input.addEventListener('keydown', (e) => {
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        
+                        // Handle backspace
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            otpInputs[index - 1].focus();
+                        }
+                    });
+                });
+            }
+
+            updateOTPInputLabel() {
+                const label = document.querySelector('#otpRequestForm label[for="otpContact"]');
+                const input = document.getElementById('otpContact');
+                
+                if (this.otpMethod === 'whatsapp') {
+                    label.innerHTML = '<i class="fas fa-phone"></i> Nomor WhatsApp';
+                    input.placeholder = 'Contoh: 628123456789';
+                } else {
+                    label.innerHTML = '<i class="fas fa-envelope"></i> Email';
+                    input.placeholder = 'Masukkan email Anda';
+                }
+            }
+
+            handleLogin(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe')?.checked;
+
+                if (!username || !password) {
+                    this.showNotification('Harap isi semua field', 'error');
+                    return;
+                }
+
+                this.authenticateUser({ username, password, rememberMe });
+            }
+
+            authenticateUser(credentials) {
+                const loginBtn = document.querySelector('.btn-login');
+                const originalText = loginBtn.innerHTML;
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memverifikasi...';
+                loginBtn.disabled = true;
+
+                // Simulate API call dengan delay realistis
+                setTimeout(() => {
+                    // Check if user exists in localStorage
+                    const users = JSON.parse(localStorage.getItem('users') || '[]');
+                    const user = users.find(u => u.username === credentials.username && u.password === credentials.password);
+                    
+                    if (user) {
+                        this.completeLogin(user);
+                    } else {
+                        this.showNotification('Username atau password salah', 'error');
+                        loginBtn.innerHTML = originalText;
+                        loginBtn.disabled = false;
+                    }
+                }, 1500);
+            }
+
+            handleRegister(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('regUsername').value;
+                const email = document.getElementById('regEmail').value;
+                const phone = document.getElementById('regPhone').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+                // Validation
+                if (!username || !email || !phone || !password || !confirmPassword) {
+                    this.showNotification('Harap isi semua field', 'error');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    this.showNotification('Password dan konfirmasi password tidak cocok', 'error');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    this.showNotification('Password harus minimal 8 karakter', 'error');
+                    return;
+                }
+
+                // Check if username or email already exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                if (users.find(u => u.username === username)) {
+                    this.showNotification('Username sudah digunakan', 'error');
+                    return;
+                }
+
+                if (users.find(u => u.email === email)) {
+                    this.showNotification('Email sudah digunakan', 'error');
+                    return;
+                }
+
+                // Create new user
+                const newUser = {
+                    id: Date.now(),
+                    username,
+                    email,
+                    phone,
+                    password,
+                    fullName: this.capitalizeName(username),
+                    role: 'student',
+                    class: '7F',
+                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(username)}&background=4361ee&color=fff`,
+                    joinDate: new Date().toISOString(),
+                    lastLogin: new Date().toISOString(),
+                    loginCount: 1,
+                    batteryLevel: Math.floor(Math.random() * 30) + 70,
+                    stats: {
+                        messages: Math.floor(Math.random() * 1000),
+                        tasksCompleted: Math.floor(Math.random() * 200),
+                        attendance: Math.floor(Math.random() * 20) + 80,
+                        performance: Math.floor(Math.random() * 30) + 70
+                    },
+                    location: this.getRandomLocation(),
+                    deviceInfo: this.getDeviceInfo()
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+
+                this.showNotification('Registrasi berhasil! Silakan login.', 'success');
+                
+                // Switch to login form
+                this.showLoginForm();
+                
+                // Reset form
+                document.getElementById('registerForm').reset();
+            }
+
+            handleOTPRequest(e) {
+                e.preventDefault();
+                
+                this.otpContact = document.getElementById('otpContact').value;
+                
+                if (!this.otpContact) {
+                    this.showNotification('Harap isi field kontak', 'error');
+                    return;
+                }
+
+                if (this.otpMethod === 'whatsapp' && !this.isValidPhone(this.otpContact)) {
+                    this.showNotification('Format nomor WhatsApp tidak valid', 'error');
+                    return;
+                }
+
+                if (this.otpMethod === 'email' && !this.isValidEmail(this.otpContact)) {
+                    this.showNotification('Format email tidak valid', 'error');
+                    return;
+                }
+
+                this.sendOTP();
+            }
+
+            sendOTP() {
+                // Generate 6-digit OTP
+                this.currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
+                const otpExpiry = Date.now() + this.otpExpiry;
+                
+                // Save OTP to localStorage
+                localStorage.setItem('otp', this.currentOTP);
+                localStorage.setItem('otpExpiry', otpExpiry.toString());
+                localStorage.setItem('otpContact', this.otpContact);
+                localStorage.setItem('otpMethod', this.otpMethod);
+
+                // Simulate sending OTP
+                const sendBtn = document.querySelector('#otpRequestForm button');
+                const originalText = sendBtn.innerHTML;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                sendBtn.disabled = true;
+
+                setTimeout(() => {
+                    // In a real application, you would call an API to send OTP
+                    // For demo purposes, we'll just show the OTP in the console
+                    console.log(`OTP untuk ${this.otpContact} (${this.otpMethod}): ${this.currentOTP}`);
+                    
+                    // Show OTP verification form
+                    document.getElementById('otpRequestForm').style.display = 'none';
+                    document.getElementById('otpVerifyForm').style.display = 'block';
+                    
+                    // Start resend timer
+                    this.startResendTimer();
+                    
+                    sendBtn.innerHTML = originalText;
+                    sendBtn.disabled = false;
+                    
+                    this.showNotification(`Kode OTP telah dikirim ke ${this.otpMethod === 'whatsapp' ? 'WhatsApp' : 'email'} Anda`, 'success');
+                }, 2000);
+            }
+
+            handleOTPVerify(e) {
+                e.preventDefault();
+                
+                // Get OTP from inputs
+                const otpInputs = document.querySelectorAll('.otp-input');
+                let enteredOTP = '';
+                otpInputs.forEach(input => {
+                    enteredOTP += input.value;
+                });
+                
+                // Verify OTP
+                const storedOTP = localStorage.getItem('otp');
+                const otpExpiry = localStorage.getItem('otpExpiry');
+                
+                if (!storedOTP || !otpExpiry) {
+                    this.showNotification('OTP tidak valid atau telah kadaluarsa', 'error');
+                    return;
+                }
+                
+                if (Date.now() > parseInt(otpExpiry)) {
+                    this.showNotification('OTP telah kadaluarsa, silakan minta OTP baru', 'error');
+                    return;
+                }
+                
+                if (enteredOTP !== storedOTP) {
+                    this.showNotification('Kode OTP tidak sesuai', 'error');
+                    return;
+                }
+                
+                // OTP verified successfully
+                this.showNotification('OTP berhasil diverifikasi', 'success');
+                
+                // Find user by contact
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const contactField = this.otpMethod === 'whatsapp' ? 'phone' : 'email';
+                const user = users.find(u => u[contactField] === this.otpContact);
+                
+                if (user) {
+                    this.completeLogin(user);
+                } else {
+                    // If user doesn't exist, create a new one
+                    const newUser = {
+                        id: Date.now(),
+                        username: this.otpMethod === 'whatsapp' ? `user_${this.otpContact}` : this.otpContact.split('@')[0],
+                        email: this.otpMethod === 'email' ? this.otpContact : `${this.otpContact}@example.com`,
+                        phone: this.otpMethod === 'whatsapp' ? this.otpContact : '',
+                        password: this.generateRandomPassword(),
+                        fullName: 'Pengguna Baru',
+                        role: 'student',
+                        class: '7F',
+                        avatar: `https://ui-avatars.com/api/?name=Pengguna+Baru&background=4361ee&color=fff`,
+                        joinDate: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        loginCount: 1,
+                        stats: {
+                            messages: 0,
+                            tasksCompleted: 0,
+                            attendance: 0,
+                            performance: 0
+                        },
+                        location: this.getRandomLocation(),
+                        deviceInfo: this.getDeviceInfo()
+                    };
+                    
+                    users.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    this.completeLogin(newUser);
+                }
+            }
+
+            handleForgotPassword(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('resetEmail').value;
+                
+                if (!email) {
+                    this.showNotification('Harap masukkan email', 'error');
+                    return;
+                }
+                
+                if (!this.isValidEmail(email)) {
+                    this.showNotification('Format email tidak valid', 'error');
+                    return;
+                }
+                
+                // Check if email exists
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.email === email);
+                
+                if (!user) {
+                    this.showNotification('Email tidak terdaftar', 'error');
+                    return;
+                }
+                
+                // Simulate sending reset link
+                const sendBtn = document.querySelector('#forgotPasswordForm button');
+                const originalText = sendBtn.innerHTML;
+                sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+                sendBtn.disabled = true;
+                
+                setTimeout(() => {
+                    // In a real application, you would send an email with reset link
+                    this.showNotification(`Link reset password telah dikirim ke ${email}`, 'success');
+                    
+                    sendBtn.innerHTML = originalText;
+                    sendBtn.disabled = false;
+                    
+                    // Show login form after 2 seconds
+                    setTimeout(() => {
+                        this.showLoginForm();
+                    }, 2000);
+                }, 2000);
+            }
+
+            handleGoogleLogin() {
+                this.showNotification('Login dengan Google sedang diproses...', 'info');
+                
+                // Simulate Google OAuth
+                setTimeout(() => {
+                    const userData = {
+                        id: Date.now(),
+                        username: 'google_user',
+                        email: 'user@gmail.com',
+                        fullName: 'Google User',
+                        role: 'student',
+                        class: '7F',
+                        avatar: 'https://ui-avatars.com/api/?name=Google+User&background=db4437&color=fff',
+                        joinDate: new Date().toISOString(),
+                        lastLogin: new Date().toISOString(),
+                        loginCount: 1
+                    };
+
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    this.currentUser = userData;
+                    this.isLoggedIn = true;
+
+                    this.showNotification('Login dengan Google berhasil!', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                }, 2000);
+            }
+
+            resendOTP() {
+                // Clear previous OTP
+                localStorage.removeItem('otp');
+                localStorage.removeItem('otpExpiry');
+                
+                // Send new OTP
+                this.sendOTP();
+            }
+
+            startResendTimer() {
+                let timeLeft = this.resendTimeout;
+                const timerElement = document.querySelector('.timer');
+                
+                const timer = setInterval(() => {
+                    timeLeft--;
+                    timerElement.textContent = `(${timeLeft})`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        timerElement.textContent = '';
+                        document.getElementById('resendOTP').classList.remove('disabled');
+                    } else {
+                        document.getElementById('resendOTP').classList.add('disabled');
+                    }
+                }, 1000);
+            }
+
+            checkPasswordStrength(password) {
+                const strengthBar = document.querySelector('.password-strength');
+                const requirements = {
+                    length: password.length >= 8,
+                    uppercase: /[A-Z]/.test(password),
+                    lowercase: /[a-z]/.test(password),
+                    number: /[0-9]/.test(password),
+                    special: /[^A-Za-z0-9]/.test(password)
+                };
+                
+                // Update requirement indicators
+                Object.keys(requirements).forEach(req => {
+                    const element = document.getElementById(`req-${req}`);
+                    if (element) {
+                        if (requirements[req]) {
+                            element.classList.add('valid');
+                        } else {
+                            element.classList.remove('valid');
+                        }
+                    }
+                });
+                
+                // Calculate strength
+                let strength = 0;
+                Object.values(requirements).forEach(met => {
+                    if (met) strength++;
+                });
+                
+                // Update strength bar
+                strengthBar.className = 'password-strength';
+                if (strength <= 1) {
+                    strengthBar.classList.add('weak');
+                } else if (strength <= 3) {
+                    strengthBar.classList.add('medium');
+                } else if (strength <= 4) {
+                    strengthBar.classList.add('strong');
+                } else {
+                    strengthBar.classList.add('very-strong');
+                }
+            }
+
+            completeLogin(userData) {
+                localStorage.setItem('currentUser', JSON.stringify(userData));
+                this.currentUser = userData;
+                this.isLoggedIn = true;
+                this.updateSessionExpiry();
+
+                // Update user statistics
+                this.updateUserStats(userData);
+
+                this.showNotification(`Selamat datang ${userData.fullName || userData.username}!`, 'success');
+                
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            }
+
+            showLoginForm() {
+                document.querySelectorAll('.login-card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                document.querySelector('.login-card:not(.register-card):not(.otp-card):not(.forgot-password-card)').style.display = 'block';
+            }
+
+            showRegisterForm() {
+                document.querySelectorAll('.login-card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                document.getElementById('registerCard').style.display = 'block';
+            }
+
+            showOTPForm() {
+                document.querySelectorAll('.login-card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                document.getElementById('otpCard').style.display = 'block';
+                document.getElementById('otpRequestForm').style.display = 'block';
+                document.getElementById('otpVerifyForm').style.display = 'none';
+            }
+
+            showForgotPasswordForm() {
+                document.querySelectorAll('.login-card').forEach(card => {
+                    card.style.display = 'none';
+                });
+                document.getElementById('forgotPasswordCard').style.display = 'block';
+            }
+
+            redirectToDashboard() {
+                if (!window.location.pathname.includes('dashboard.html')) {
+                    window.location.href = 'dashboard.html';
+                }
+            }
+
+            redirectToLogin() {
+                if (!window.location.pathname.includes('index.html')) {
+                    window.location.href = 'index.html';
+                }
+            }
+
+            handleSessionExpired() {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('sessionExpiry');
+                this.currentUser = null;
+                this.isLoggedIn = false;
+                
+                if (!window.location.pathname.includes('index.html')) {
+                    this.showNotification('Sesi telah berakhir, silakan login kembali', 'warning');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 2000);
+                }
+            }
+
+            updateUserStats(userData) {
+                const stats = JSON.parse(localStorage.getItem('userStats') || '{}');
+                
+                if (!stats[userData.id]) {
+                    stats[userData.id] = {
+                        totalLogins: 0,
+                        totalTimeSpent: 0,
+                        lastActivity: new Date().toISOString(),
+                        pagesVisited: []
+                    };
+                }
+                
+                stats[userData.id].totalLogins++;
+                stats[userData.id].lastActivity = new Date().toISOString();
+                
+                localStorage.setItem('userStats', JSON.stringify(stats));
+            }
+
+            isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            isValidPhone(phone) {
+                const phoneRegex = /^[0-9]{10,15}$/;
+                return phoneRegex.test(phone);
+            }
+
+            generateRandomPassword() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+                let password = '';
+                for (let i = 0; i < 12; i++) {
+                    password += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return password;
+            }
+
+            getRandomLocation() {
+                const locations = [
+                    'Jakarta, Indonesia',
+                    'Bandung, Indonesia', 
+                    'Surabaya, Indonesia',
+                    'Medan, Indonesia',
+                    'Makassar, Indonesia'
+                ];
+                return locations[Math.floor(Math.random() * locations.length)];
+            }
+
+            getDeviceInfo() {
+                return {
+                    browser: navigator.userAgent,
+                    platform: navigator.platform,
+                    language: navigator.language,
+                    screen: `${screen.width}x${screen.height}`,
+                    cores: navigator.hardwareConcurrency || 'Unknown'
+                };
+            }
+
+            capitalizeName(name) {
+                return name.replace(/\w\S*/g, (txt) => {
+                    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+                });
+            }
+
+            updateUI() {
+                if (this.isLoggedIn && this.currentUser) {
+                    // Update UI elements if needed
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                // Remove existing notification
+                const existingNotification = document.querySelector('.notification');
+                if (existingNotification) {
+                    existingNotification.remove();
+                }
+
+                // Create notification element
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <div class="notification-content">
+                        <i class="fas fa-${this.getNotificationIcon(type)}"></i>
+                        <span>${message}</span>
+                    </div>
+                    <button class="notification-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+
+                // Auto remove after 5 seconds
+                const autoRemove = setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                }, 5000);
+
+                // Close button
+                const closeBtn = notification.querySelector('.notification-close');
+                closeBtn.addEventListener('click', () => {
+                    clearTimeout(autoRemove);
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 300);
+                });
+            }
+
+            getNotificationIcon(type) {
+                const icons = {
+                    success: 'check-circle',
+                    error: 'exclamation-circle',
+                    warning: 'exclamation-triangle',
+                    info: 'info-circle'
+                };
+                return icons[type] || 'info-circle';
+            }
+        }
+
+        // Initialize auth system when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.authSystem = new AdvancedAuthSystem();
+            
+            // Add some visual effects
+            addVisualEffects();
+        });
+
+        // Additional visual effects
+        function addVisualEffects() {
+            // Add focus effects to form inputs
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.6);
+                        transform: scale(0);
+                        animation: ripple-animation 0.6s linear;
+                        width: ${size}px;
+                        height: ${size}px;
+                        left: ${x}px;
+                        top: ${y}px;
+                    `;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // Add CSS for ripple animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple-animation {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+                .btn {
+                    position: relative;
+                    overflow: hidden;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
 </body>
-                  </html>
+</html>
+                
