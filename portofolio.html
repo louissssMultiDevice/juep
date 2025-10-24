@@ -1137,63 +1137,62 @@
             </div>
 
             <div class="contact-content">
-                <div class="contact-info">
-                    <div class="contact-item reveal">
-                        <div class="contact-icon">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h4>WhatsApp</h4>
-                            <p>Hubungi saya langsung via WhatsApp</p>
-                        </div>
+                <div class="contact-item reveal" onclick="openWhatsApp()">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
                     </div>
-
-                    <div class="contact-item reveal">
-                        <div class="contact-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h4>Instagram</h4>
-                            <p>Follow untuk update terbaru</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item reveal">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h4>Email</h4>
-                            <p>Kirim email untuk kerjasama</p>
-                        </div>
-                    </div>
-
-                    <div class="contact-item reveal">
-                        <div class="contact-icon">
-                            <i class="fab fa-telegram"></i>
-                        </div>
-                        <div class="contact-details">
-                            <h4>WhatsApp Channel</h4>
-                            <p>Join channel untuk update project</p>
-                        </div>
-                    </div>
-
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-github"></i>
-                        </a>
+                    <div class="contact-details">
+                        <h4>WhatsApp</h4>
+                        <p>085800650661</p>
+                        <small>Klik untuk chat langsung</small>
                     </div>
                 </div>
 
+                <div class="contact-item reveal" onclick="openInstagram()">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Instagram</h4>
+                        <p>@its_me.ndii</p>
+                        <small>Klik untuk melihat profil</small>
+                    </div>
+                </div>
+
+                <div class="contact-item reveal" onclick="openEmail()">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>Email</h4>
+                        <p>Kirim email untuk kerjasama</p>
+                    </div>
+                </div>
+
+                <div class="contact-item reveal" onclick="openGitHub()">
+                    <div class="contact-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="contact-details">
+                        <h4>GitHub</h4>
+                        <p>louissssMultiDevice</p>
+                        <small>Klik untuk melihat repositori</small>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://wa.me/6285800650661" class="social-link" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://instagram.com/its_me.ndii" class="social-link" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://github.com/louissssMultiDevice" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
                 <div class="contact-form reveal">
                     <div class="contact-item">
                         <div class="contact-icon">
@@ -1274,6 +1273,30 @@
     </footer>
 
     <script>
+        // Fungsi untuk membuka WhatsApp
+        function openWhatsApp() {
+            const phoneNumber = "6285800650661";
+            const message = "Halo, saya tertarik untuk berkomunikasi dengan Anda.";
+            const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Fungsi untuk membuka Instagram
+        function openInstagram() {
+            window.open('https://instagram.com/its_me.ndii', '_blank');
+        }
+
+        // Fungsi untuk membuka GitHub
+        function openGitHub() {
+            window.open('https://github.com/louissssMultiDevice', '_blank');
+        }
+
+        // Fungsi untuk membuka Email
+        function openEmail() {
+            const subject = "Hubungan Kerjasama";
+            const body = "Halo, saya tertarik untuk berdiskusi tentang kemungkinan kerjasama.";
+            window.location.href = `mailto:fikastore.cs@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
         // Scroll animations
         function revealOnScroll() {
             const reveals = document.querySelectorAll('.reveal');
