@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Doetoez</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #00d4ff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2d2d2d;
+            --success: #00e676;
+            --warning: #ffab00;
+            --danger: #ff1744;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animasi latar belakang */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent);
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 80vh;
+            height: 80vh;
+            top: -30vh;
+            left: -20vh;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 60vh;
+            height: 60vh;
+            top: 60vh;
+            right: -10vh;
+            animation-delay: -5s;
+            background: radial-gradient(circle, var(--secondary), transparent);
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 40vh;
+            height: 40vh;
+            bottom: -10vh;
+            left: 30vh;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--accent), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(0) rotate(180deg);
+            }
+            75% {
+                transform: translateY(20px) rotate(270deg);
+            }
+        }
+
+        /* Header dan Navigasi */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a.active {
+            color: var(--accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 23, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* Konten Utama */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-title {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1rem;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: var(--gray);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Tabel User */
+        .users-table {
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 1fr 1fr 150px;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--gray);
+            font-weight: 600;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 1fr 1fr 1fr 150px;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .table-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .user-avatar-small {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .user-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: rgba(0, 230, 118, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .status-offline {
+            background: rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            border: 1px solid var(--glass-border);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .action-btn.edit {
+            background: rgba(255, 171, 0, 0.1);
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .action-btn.delete {
+            background: rgba(255, 23, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--gray);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--glass);
+        }
+
+        /* Aktivitas */
+        .activity-list {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: var(--accent);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .activity-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .activity-time {
+            color: #777;
+            font-size: 0.8rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: right;
+            }
+
+            .user-details {
+                align-items: flex-end;
+            }
+
+            .admin-tabs {
+                flex-wrap: wrap;
+            }
+
+            .table-header, .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .table-header {
+                display: none;
+            }
+
+            .table-row {
+                padding: 1rem;
+                border: 1px solid var(--glass-border);
+                border-radius: 10px;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animasi Latar Belakang -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-brain"></i></div>
+            <div class="logo-text">Doetoez</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/docs">Data Kelas</a></li>
+                <li><a href="/sistem">Sistem</a></li>
+                <li><a href="/ai-juep/chat">AI Chat</a></li>
+                <li><a href="/admin" class="active">Admin</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">
+                <!-- Avatar akan diisi oleh JavaScript -->
+            </div>
+            <div class="user-details">
+                <div class="user-name" id="userName">Administrator</div>
+                <div class="user-role" id="userRole">Admin</div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+        <div class="admin-header">
+            <h1 class="admin-title">Panel Administrator</h1>
+            <button class="btn btn-primary" id="addUserBtn">
+                <i class="fas fa-plus"></i> Tambah Pengguna
+            </button>
+        </div>
+
+        <!-- Statistik -->
+        <div class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number" id="totalUsers">0</div>
+                <div class="stat-label">Total Pengguna</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="stat-number" id="onlineUsers">0</div>
+                <div class="stat-label">Pengguna Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number" id="activeToday">0</div>
+                <div class="stat-label">Aktif Hari Ini</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-number" id="reports">3</div>
+                <div class="stat-label">Laporan Baru</div>
+            </div>
+        </div>
+
+        <!-- Tab Navigasi -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" data-tab="users">Manajemen Pengguna</button>
+            <button class="tab-btn" data-tab="activity">Aktivitas Terbaru</button>
+            <button class="tab-btn" data-tab="system">Pengaturan Sistem</button>
+        </div>
+
+        <!-- Tab: Manajemen Pengguna -->
+        <div class="tab-content active" id="users-tab">
+            <div class="users-table">
+                <div class="table-header">
+                    <div>#</div>
+                    <div>Nama</div>
+                    <div>Email</div>
+                    <div>Peran</div>
+                    <div>Status</div>
+                    <div>Aksi</div>
+                </div>
+                <div id="usersTableBody">
+                    <!-- Data pengguna akan diisi oleh JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Aktivitas Terbaru -->
+        <div class="tab-content" id="activity-tab">
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Achmad Bukhori Rohandi</div>
+                        <div class="activity-desc">Mengakses halaman dashboard</div>
+                    </div>
+                    <div class="activity-time">2 menit lalu</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Kayla Ajwah Asyifa</div>
+                        <div class="activity-desc">Menyelesaikan kuis Matematika</div>
+                    </div>
+                    <div class="activity-time">15 menit lalu</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Ayuni Fuji Novilianti</div>
+                        <div class="activity-desc">Menggunakan AI Chat untuk belajar</div>
+                    </div>
+                    <div class="activity-time">30 menit lalu</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Sistem</div>
+                        <div class="activity-desc">Pembaruan sistem otomatis selesai</div>
+                    </div>
+                    <div class="activity-time">1 jam lalu</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Pengaturan Sistem -->
+        <div class="tab-content" id="system-tab">
+            <div class="form-group">
+                <label for="systemName">Nama Sistem</label>
+                <input type="text" id="systemName" value="Doetoez Platform">
+            </div>
+            <div class="form-group">
+                <label for="maintenanceMode">Mode Pemeliharaan</label>
+                <select id="maintenanceMode">
+                    <option value="false">Nonaktif</option>
+                    <option value="true">Aktif</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="maxUsers">Maksimal Pengguna</label>
+                <input type="number" id="maxUsers" value="500">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-primary">Simpan Pengaturan</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Edit User -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Edit Pengguna</h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label for="userNameInput">Nama Lengkap</label>
+                    <input type="text" id="userNameInput" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Peran</label>
+                    <select id="userRole" required>
+                        <option value="student">Murid</option>
+                        <option value="teacher">Guru</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Kata Sandi Baru (kosongkan jika tidak diubah)</label>
+                    <input type="password" id="userPassword">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Doetoez</h3>
+                <p>Platform pembelajaran futuristik dengan AI canggih untuk membantu Anda mencapai potensi maksimal.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Tautan Cepat</h3>
+                <ul>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/docs">Data Kelas</a></li>
+                    <li><a href="/sistem">Sistem</a></li>
+                    <li><a href="/ai-juep/chat">AI Chat</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Lokasi</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Ikuti Kami</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-whatsapp"></i> Saluran WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 — Doetoez. Semua hak dilindungi. Dibuat oleh Handii.
+        </div>
+    </footer>
+
+    <script>
+        // Data pengguna (dalam aplikasi nyata, ini akan diambil dari database)
+        let usersData = [
+            { id: 1, name: "Achmad Bukhori Rohandi", email: "ndiidepzx@doetoez.com", role: "admin", status: "online", password: "admin123" },
+            { id: 2, name: "Yohana Harapenta Purba", email: "yohanaharapenta@doetoez.com", role: "teacher", status: "online", password: "password123" },
+            { id: 3, name: "Kayla Ajwah Asyifa", email: "murid2@doetoez.com", role: "student", status: "offline", password: "password123" },
+            { id: 4, name: "Ayuni Fuji Novilianti", email: "ayuni@doetoez.com", role: "student", status: "online", password: "password123" },
+            { id: 5, name: "Ashra Syifa Fauzi", email: "ashra@doetoez.com", role: "student", status: "offline", password: "password123" }
+        ];
+
+        // Data aktivitas
+        const activitiesData = [
+            { user: "Achmad Bukhori Rohandi", action: "Mengakses halaman dashboard", time: "2 menit lalu" },
+            { user: "Kayla Ajwah Asyifa", action: "Menyelesaikan kuis Matematika", time: "15 menit lalu" },
+            { user: "Ayuni Fuji Novilianti", action: "Menggunakan AI Chat untuk belajar", time: "30 menit lalu" },
+            { user: "Sistem", action: "Pembaruan sistem otomatis selesai", time: "1 jam lalu" }
+        ];
+
+        // Ambil data user dari localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Jika tidak ada user yang login atau bukan admin, redirect ke halaman login
+        if (!currentUser || currentUser.role !== 'admin') {
+            window.location.href = '/login.html';
+        }
+
+        // Fungsi untuk mendapatkan inisial nama
+        function getInitials(name) {
+            return name.split(' ').map(word => word[0]).join('').toUpperCase();
+        }
+
+        // Fungsi untuk menerjemahkan role
+        function translateRole(role) {
+            const roleMap = {
+                'admin': 'Administrator',
+                'student': 'Murid',
+                'teacher': 'Guru'
+            };
+            return roleMap[role] || role;
+        }
+
+        // Fungsi untuk memperbarui statistik
+        function updateStats() {
+            document.getElementById('totalUsers').textContent = usersData.length;
+            document.getElementById('onlineUsers').textContent = usersData.filter(user => user.status === 'online').length;
+            document.getElementById('activeToday').textContent = usersData.filter(user => user.status === 'online').length + 5;
+        }
+
+        // Fungsi untuk memuat tabel pengguna
+        function loadUsersTable() {
+            const tableBody = document.getElementById('usersTableBody');
+            tableBody.innerHTML = '';
+
+            usersData.forEach(user => {
+                const row = document.createElement('div');
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <div class="user-avatar-small">${getInitials(user.name)}</div>
+                    <div>${user.name}</div>
+                    <div>${user.email}</div>
+                    <div>${translateRole(user.role)}</div>
+                    <div><span class="user-status ${user.status === 'online' ? 'status-online' : 'status-offline'}">${user.status === 'online' ? 'Online' : 'Offline'}</span></div>
+                    <div class="action-buttons">
+                        <button class="action-btn edit" data-id="${user.id}">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="action-btn delete" data-id="${user.id}">
+                            <i class="fas fa-trash"></i> Hapus
+                        </button>
+                    </div>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Tambahkan event listener untuk tombol edit dan hapus
+            document.querySelectorAll('.action-btn.edit').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.dataset.id);
+                    editUser(userId);
+                });
+            });
+
+            document.querySelectorAll('.action-btn.delete').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.dataset.id);
+                    deleteUser(userId);
+                });
+            });
+        }
+
+        // Fungsi untuk mengedit pengguna
+        function editUser(userId) {
+            const user = usersData.find(u => u.id === userId);
+            if (user) {
+                document.getElementById('modalTitle').textContent = 'Edit Pengguna';
+                document.getElementById('userId').value = user.id;
+                document.getElementById('userNameInput').value = user.name;
+                document.getElementById('userEmail').value = user.email;
+                document.getElementById('userRole').value = user.role;
+                document.getElementById('userPassword').value = '';
+                
+                document.getElementById('userModal').classList.add('active');
+            }
+        }
+
+        // Fungsi untuk menghapus pengguna
+        function deleteUser(userId) {
+            if (confirm('Apakah Anda yakin ingin menghapus pengguna ini?')) {
+                usersData = usersData.filter(user => user.id !== userId);
+                loadUsersTable();
+                updateStats();
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update UI dengan data user
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = translateRole(currentUser.role);
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+            
+            // Update statistik dan tabel
+            updateStats();
+            loadUsersTable();
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/login.html';
+            });
+            
+            // Tab functionality
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}-tab`).classList.add('active');
+                });
+            });
+            
+            // Modal functionality
+            document.getElementById('addUserBtn').addEventListener('click', function() {
+                document.getElementById('modalTitle').textContent = 'Tambah Pengguna Baru';
+                document.getElementById('userForm').reset();
+                document.getElementById('userId').value = '';
+                document.getElementById('userModal').classList.add('active');
+            });
+            
+            document.getElementById('closeModal').addEventListener('click', function() {
+                document.getElementById('userModal').classList.remove('active');
+            });
+            
+            document.getElementById('cancelBtn').addEventListener('click', function() {
+                document.getElementById('userModal').classList.remove('active');
+            });
+            
+            // Form submission
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const userId = document.getElementById('userId').value;
+                const name = document.getElementById('userNameInput').value;
+                const email = document.getElementById('userEmail').value;
+                const role = document.getElementById('userRole').value;
+                const password = document.getElementById('userPassword').value;
+                
+                if (userId) {
+                    // Edit user yang sudah ada
+                    const userIndex = usersData.findIndex(u => u.id === parseInt(userId));
+                    if (userIndex !== -1) {
+                        usersData[userIndex].name = name;
+                        usersData[userIndex].email = email;
+                        usersData[userIndex].role = role;
+                        if (password) {
+                            usersData[userIndex].password = password;
+                        }
+                    }
+                } else {
+                    // Tambah user baru
+                    const newUser = {
+                        id: usersData.length > 0 ? Math.max(...usersData.map(u => u.id)) + 1 : 1,
+                        name,
+                        email,
+                        role,
+                        status: 'offline',
+                        password: password || 'password123'
+                    };
+                    usersData.push(newUser);
+                }
+                
+                loadUsersTable();
+                updateStats();
+                document.getElementById('userModal').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
