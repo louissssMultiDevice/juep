@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Premium - Doetoez</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #00d4ff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2d2d2d;
+            --success: #00e676;
+            --warning: #ffab00;
+            --danger: #ff1744;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* Glass Morphism Effects */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+
+        .glass-intense {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        /* Header dan Navigasi */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(18, 18, 18, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a.active {
+            color: var(--accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 23, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+            transform: translateY(-2px);
+        }
+
+        /* Konten Utama */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Welcome Section dengan Animasi */
+        .welcome-section {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border-radius: 25px;
+            padding: 3rem;
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1), rgba(37, 117, 252, 0.1));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .welcome-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .welcome-title {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 20px rgba(106, 17, 203, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 212, 255, 0.5); }
+        }
+
+        .welcome-subtitle {
+            color: #aaa;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-role-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Dashboard Grid dengan Hover Effects */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-card {
+            position: relative;
+            padding: 2rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .dashboard-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .dashboard-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover .card-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .card-content {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--danger);
+        }
+
+        .card-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Real-time Activity dengan Typing Effect */
+        .activity-section {
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--success);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        .activity-list {
+            max-height: 400px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem;
+            border-radius: 15px;
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .activity-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--glass-border);
+            transform: translateX(10px);
+        }
+
+        .activity-item.new {
+            animation: highlight 2s ease;
+        }
+
+        @keyframes highlight {
+            0% { background: rgba(0, 230, 118, 0.2); }
+            100% { background: transparent; }
+        }
+
+        .activity-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-user {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-action {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        .activity-time {
+            color: var(--accent);
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Progress Charts */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            border-radius: 20px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.4);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+        }
+
+        .action-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: right;
+            }
+
+            .user-details {
+                align-items: flex-end;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header class="glass-intense">
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-brain"></i></div>
+            <div class="logo-text">Doetoez</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard" class="active">Dashboard</a></li>
+                <li><a href="/docs">Data Kelas</a></li>
+                <li><a href="/sistem">Sistem</a></li>
+                <li><a href="/ai-juep/chat">AI Chat</a></li>
+                <li><a href="/stats">Statistik</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">
+                <!-- Avatar akan diisi oleh JavaScript -->
+            </div>
+            <div class="user-details">
+                <div class="user-name" id="userName">Administrator</div>
+                <div class="user-role" id="userRole">Admin</div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+        <!-- Welcome Section -->
+        <section class="welcome-section glass-intense">
+            <h1 class="welcome-title" id="welcomeTitle">Selamat Datang, Pengguna!</h1>
+            <p class="welcome-subtitle">Platform pembelajaran futuristik dengan AI canggih</p>
+            <div class="user-role-badge" id="roleBadge">
+                <i class="fas fa-star"></i> Peran Pengguna
+            </div>
+            <p>Anda telah berhasil login ke sistem Doetoez. Nikmati pengalaman belajar yang personal dan interaktif!</p>
+        </section>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="/ai-juep/chat" class="action-btn glass">
+                <div class="action-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="action-text">AI Juep Chat</div>
+            </a>
+            <a href="/docs" class="action-btn glass">
+                <div class="action-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="action-text">Data Kelas</div>
+            </a>
+            <a href="/sistem" class="action-btn glass">
+                <div class="action-icon">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div class="action-text">Pengaturan</div>
+            </a>
+            <a href="/profile" class="action-btn glass">
+                <div class="action-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="action-text">Profile Saya</div>
+            </a>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card glass">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3 class="card-title">Materi Pembelajaran</h3>
+                </div>
+                <div class="card-content">
+                    Akses materi pembelajaran terbaru dan lengkap untuk meningkatkan pemahaman Anda tentang berbagai topik.
+                </div>
+                <div class="card-stats">
+                    <div class="stat-value" id="materialCount">12</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 15%
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn primary">
+                        <i class="fas fa-eye"></i> Lihat Materi
+                    </button>
+                    <button class="card-btn">
+                        <i class="fas fa-download"></i> Unduh
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-card glass">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="card-title">AI Juep</h3>
+                </div>
+                <div class="card-content">
+                    Dapatkan bantuan belajar 24/7 dari asisten AI cerdas yang dapat menjawab pertanyaan dan memberikan penjelasan.
+                </div>
+                <div class="card-stats">
+                    <div class="stat-value" id="aiRequests">342</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 25%
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn primary">
+                        <i class="fas fa-comment"></i> Chat Sekarang
+                    </button>
+                </div>
+            </div>
+
+            <div class="dashboard-card glass">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="card-title">Progress Belajar</h3>
+                </div>
+                <div class="card-content">
+                    Pantau perkembangan belajar Anda dengan dashboard analitik yang detail dan rekomendasi personal.
+                </div>
+                <div class="card-stats">
+                    <div class="stat-value" id="progressValue">85%</div>
+                    <div class="stat-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> 8%
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn primary">
+                        <i class="fas fa-chart-bar"></i> Lihat Progress
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card glass">
+                <h3 class="section-title">Aktivitas Belajar Mingguan</h3>
+                <div class="chart-container">
+                    <canvas id="weeklyActivityChart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card glass">
+                <h3 class="section-title">Distribusi Mata Pelajaran</h3>
+                <div class="chart-container">
+                    <canvas id="subjectDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Real-time Activity -->
+        <section class="activity-section glass">
+            <h3 class="section-title">
+                Aktivitas Real-time
+                <span class="live-indicator">
+                    <div class="pulse-dot"></div>
+                    LIVE
+                </span>
+            </h3>
+            <div class="activity-list" id="activityList">
+                <!-- Aktivitas akan diisi secara real-time -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Doetoez</h3>
+                <p>Platform pembelajaran futuristik dengan AI canggih untuk membantu Anda mencapai potensi maksimal.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Tautan Cepat</h3>
+                <ul>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/docs">Data Kelas</a></li>
+                    <li><a href="/sistem">Sistem</a></li>
+                    <li><a href="/ai-juep/chat">AI Chat</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Lokasi</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Ikuti Kami</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-whatsapp"></i> Saluran WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 — Doetoez. Semua hak dilindungi. Dibuat oleh Handii.
+        </div>
+    </footer>
+
+    <script>
+        // Enhanced Dashboard Manager dengan Deteksi Aktivitas
+        class AdvancedDashboardManager {
+            constructor() {
+                this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                this.userActivities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+                this.userProgress = JSON.parse(localStorage.getItem('userProgress') || '[]');
+                this.systemStats = JSON.parse(localStorage.getItem('systemStats') || this.getDefaultStats());
+                
+                this.activityCallbacks = [];
+                this.initializeAdvancedFeatures();
+            }
+
+            getDefaultStats() {
+                return {
+                    materialCount: 12,
+                    aiRequests: 342,
+                    progressValue: 85,
+                    weeklyActivity: [65, 59, 80, 81, 56, 55, 40],
+                    subjectDistribution: [30, 25, 20, 15, 10]
+                };
+            }
+
+            initializeAdvancedFeatures() {
+                // Initialize particles.js
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        color: { value: "#6a11cb" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#2575fc",
+                            opacity: 0.4,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 2,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "repulse" },
+                            onclick: { enable: true, mode: "push" }
+                        }
+                    }
+                });
+
+                // Initialize user activity detection
+                this.setupActivityDetection();
+            }
+
+            setupActivityDetection() {
+                // Deteksi aktivitas mouse
+                document.addEventListener('mousemove', () => this.recordUserActivity('mouse_move'));
+                
+                // Deteksi aktivitas keyboard
+                document.addEventListener('keydown', () => this.recordUserActivity('keyboard_use'));
+                
+                // Deteksi klik
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.dashboard-card')) {
+                        this.recordUserActivity('card_interaction');
+                    }
+                });
+
+                // Deteksi scroll
+                let scrollTimer;
+                window.addEventListener('scroll', () => {
+                    this.recordUserActivity('scrolling');
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => {
+                        this.recordUserActivity('scroll_stop');
+                    }, 1000);
+                });
+
+                // Deteksi visibility change (tab switch)
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        this.recordUserActivity('tab_switch_away');
+                    } else {
+                        this.recordUserActivity('tab_switch_back');
+                    }
+                });
+            }
+
+            recordUserActivity(type) {
+                const activity = {
+                    type: type,
+                    timestamp: new Date(),
+                    user: this.currentUser?.name || 'Unknown',
+                    page: window.location.pathname,
+                    userAgent: navigator.userAgent
+                };
+
+                // Simpan aktivitas
+                this.userActivities.unshift(activity);
+                
+                // Panggil callback
+                this.activityCallbacks.forEach(callback => callback(activity));
+
+                // Batasi jumlah aktivitas
+                if (this.userActivities.length > 100) {
+                    this.userActivities = this.userActivities.slice(0, 50);
+                }
+
+                // Simpan ke localStorage
+                localStorage.setItem('userActivities', JSON.stringify(this.userActivities));
+            }
+
+            onActivity(callback) {
+                this.activityCallbacks.push(callback);
+            }
+
+            getRecentActivities(limit = 8) {
+                return this.userActivities.slice(0, limit);
+            }
+
+            getSmartRecommendations() {
+                const recentActivities = this.getRecentActivities(20);
+                const activityTypes = recentActivities.reduce((acc, activity) => {
+                    acc[activity.type] = (acc[activity.type] || 0) + 1;
+                    return acc;
+                }, {});
+
+                // Logic rekomendasi cerdas berdasarkan pola aktivitas
+                const recommendations = [];
+
+                if (activityTypes['card_interaction'] > 5) {
+                    recommendations.push({
+                        type: 'feature_discovery',
+                        message: 'Anda sering berinteraksi dengan kartu materi. Coba fitur AI Chat untuk bantuan belajar!',
+                        priority: 'high'
+                    });
+                }
+
+                if (activityTypes['mouse_move'] > 100) {
+                    recommendations.push({
+                        type: 'engagement',
+                        message: 'Tingkat engagement Anda tinggi! Lanjutkan semangat belajar!',
+                        priority: 'medium'
+                    });
+                }
+
+                return recommendations;
+            }
+
+            updateRealTimeStats() {
+                // Update stats dengan variasi real-time
+                this.systemStats.materialCount += Math.floor(Math.random() * 3) - 1;
+                this.systemStats.aiRequests += Math.floor(Math.random() * 10);
+                this.systemStats.progressValue = Math.min(100, Math.max(0, 
+                    this.systemStats.progressValue + (Math.random() * 2 - 1)));
+
+                // Simpan stats
+                localStorage.setItem('systemStats', JSON.stringify(this.systemStats));
+
+                return this.systemStats;
+            }
+
+            simulateOtherUserActivities() {
+                const otherUsers = ['Yohana Harapenta', 'Kayla Ajwah', 'Ayuni Fuji', 'Ashra Syifa'];
+                const actions = [
+                    'mengakses materi Matematika',
+                    'menyelesaikan kuis IPA',
+                    'berdiskusi di forum',
+                    'menggunakan AI Chat',
+                    'mengunduh modul belajar',
+                    'memperbarui profil'
+                ];
+
+                if (Math.random() < 0.4) {
+                    const randomUser = otherUsers[Math.floor(Math.random() * otherUsers.length)];
+                    const randomAction = actions[Math.floor(Math.random() * actions.length)];
+                    
+                    this.recordUserActivity('simulated_activity');
+                    
+                    return {
+                        user: randomUser,
+                        action: randomAction,
+                        timestamp: new Date()
+                    };
+                }
+                return null;
+            }
+        }
+
+        // Inisialisasi
+        const dashboardManager = new AdvancedDashboardManager();
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Jika tidak ada user yang login, redirect ke halaman login
+        if (!currentUser) {
+            window.location.href = '/login.html';
+        }
+
+        // Fungsi untuk mendapatkan inisial nama
+        function getInitials(name) {
+            return name.split(' ').map(word => word[0]).join('').toUpperCase();
+        }
+
+        // Fungsi untuk menerjemahkan role
+        function translateRole(role) {
+            const roleMap = {
+                'admin': 'Administrator',
+                'student': 'Murid',
+                'teacher': 'Guru'
+            };
+            return roleMap[role] || role;
+        }
+
+        // Fungsi untuk format waktu
+        function formatTime(timestamp) {
+            const now = new Date();
+            const activityTime = new Date(timestamp);
+            const diffMs = now - activityTime;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+
+            if (diffMins < 1) return 'baru saja';
+            if (diffMins < 60) return `${diffMins}m yang lalu`;
+            if (diffHours < 24) return `${diffHours}j yang lalu`;
+            return activityTime.toLocaleDateString('id-ID');
+        }
+
+        // Update UI dengan data real
+        function updateDashboard() {
+            const stats = dashboardManager.updateRealTimeStats();
+            
+            // Update welcome section
+            document.getElementById('welcomeTitle').textContent = `Selamat Datang, ${currentUser.name}!`;
+            document.getElementById('roleBadge').innerHTML = `<i class="fas fa-star"></i> ${translateRole(currentUser.role)}`;
+            
+            // Update card stats
+            document.getElementById('materialCount').textContent = stats.materialCount;
+            document.getElementById('aiRequests').textContent = stats.aiRequests;
+            document.getElementById('progressValue').textContent = stats.progressValue + '%';
+            
+            // Update activities
+            updateActivities();
+            
+            // Update charts
+            updateCharts();
+        }
+
+        function updateActivities() {
+            const activityList = document.getElementById('activityList');
+            const recentActivities = dashboardManager.getRecentActivities(8);
+            
+            activityList.innerHTML = '';
+            
+            recentActivities.forEach((activity, index) => {
+                const activityItem = document.createElement('div');
+                activityItem.className = `activity-item ${index === 0 ? 'new' : ''}`;
+                
+                let displayText = '';
+                switch(activity.type) {
+                    case 'mouse_move':
+                        displayText = 'berinteraksi dengan antarmuka';
+                        break;
+                    case 'keyboard_use':
+                        displayText = 'menggunakan keyboard';
+                        break;
+                    case 'card_interaction':
+                        displayText = 'mengklik kartu dashboard';
+                        break;
+                    case 'scrolling':
+                        displayText = 'men-scroll halaman';
+                        break;
+                    case 'simulated_activity':
+                        displayText = activity.action || 'melakukan aktivitas';
+                        break;
+                    default:
+                        displayText = 'menggunakan platform';
+                }
+
+                activityItem.innerHTML = `
+                    <div class="activity-avatar">${getInitials(activity.user)}</div>
+                    <div class="activity-content">
+                        <div class="activity-user">${activity.user}</div>
+                        <div class="activity-action">${displayText}</div>
+                    </div>
+                    <div class="activity-time">${formatTime(activity.timestamp)}</div>
+                `;
+                activityList.appendChild(activityItem);
+            });
+        }
+
+        function updateCharts() {
+            const stats = dashboardManager.systemStats;
+            
+            // Weekly Activity Chart
+            const weeklyCtx = document.getElementById('weeklyActivityChart').getContext('2d');
+            new Chart(weeklyCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                    datasets: [{
+                        label: 'Aktivitas',
+                        data: stats.weeklyActivity,
+                        borderColor: '#00d4ff',
+                        backgroundColor: 'rgba(0, 212, 255, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#6a11cb',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#aaa' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#aaa' }
+                        }
+                    }
+                }
+            });
+
+            // Subject Distribution Chart
+            const subjectCtx = document.getElementById('subjectDistributionChart').getContext('2d');
+            new Chart(subjectCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Matematika', 'IPA', 'Bahasa', 'IPS', 'Lainnya'],
+                    datasets: [{
+                        data: stats.subjectDistribution,
+                        backgroundColor: [
+                            '#6a11cb', '#2575fc', '#00d4ff', '#00e676', '#ffab00'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#fff',
+                                padding: 20,
+                                font: { size: 12 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update UI dengan data user
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = translateRole(currentUser.role);
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+            
+            // Catat aktivitas login
+            dashboardManager.recordUserActivity('page_visit');
+            
+            // Load data awal
+            updateDashboard();
+            
+            // Setup activity callbacks
+            dashboardManager.onActivity((activity) => {
+                // Update UI ketika ada aktivitas baru
+                if (activity.type === 'simulated_activity') {
+                    updateActivities();
+                }
+            });
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                dashboardManager.recordUserActivity('logout');
+                localStorage.removeItem('currentUser');
+                window.location.href = '/login.html';
+            });
+            
+            // Real-time updates
+            setInterval(() => {
+                updateDashboard();
+                
+                // Simulasi aktivitas pengguna lain
+                dashboardManager.simulateOtherUserActivities();
+                
+                // Tampilkan rekomendasi cerdas
+                const recommendations = dashboardManager.getSmartRecommendations();
+                if (recommendations.length > 0 && Math.random() < 0.1) {
+                    const rec = recommendations[0];
+                    showSmartNotification(rec.message);
+                }
+            }, 8000);
+
+            // Update charts secara berkala
+            setInterval(updateCharts, 30000);
+        });
+
+        function showSmartNotification(message) {
+            // Buat notifikasi sementara
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                max-width: 300px;
+                animation: slideIn 0.5s ease;
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-lightbulb"></i>
+                    <strong>Rekomendasi Cerdas</strong>
+                </div>
+                <div style="margin-top: 0.5rem; font-size: 0.9rem;">${message}</div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 5000);
+        }
+
+        // Tambahkan style untuk animasi notifikasi
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
