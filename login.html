@@ -107,6 +107,30 @@
             padding: 3rem;
             border: 1px solid var(--glass-border);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(106, 17, 203, 0.1), transparent);
+            animation: shine 3s infinite;
+            z-index: 0;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .login-content {
+            position: relative;
+            z-index: 1;
         }
 
         .login-header {
@@ -127,6 +151,12 @@
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
         .logo-text {
@@ -152,6 +182,7 @@
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
@@ -176,6 +207,7 @@
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .btn {
@@ -192,6 +224,23 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
@@ -213,24 +262,123 @@
         .login-footer a {
             color: var(--accent);
             text-decoration: none;
+            transition: all 0.3s ease;
         }
 
-        .alert {
-            padding: 1rem;
-            border-radius: 10px;
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Doetoez Alert System */
+        .doetoez-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 300px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .doetoez-alert.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             margin-bottom: 1rem;
-            display: none;
         }
 
-        .alert-error {
-            background: rgba(255, 23, 68, 0.1);
-            border: 1px solid var(--danger);
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .alert-success .alert-icon {
+            background: rgba(0, 230, 118, 0.2);
+            color: var(--success);
+            border: 2px solid var(--success);
+        }
+
+        .alert-error .alert-icon {
+            background: rgba(255, 23, 68, 0.2);
             color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .alert-warning .alert-icon {
+            background: rgba(255, 171, 0, 0.2);
+            color: var(--warning);
+            border: 2px solid var(--warning);
+        }
+
+        .alert-info .alert-icon {
+            background: rgba(0, 212, 255, 0.2);
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+
+        .alert-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-message {
+            color: #aaa;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .alert-progress {
+            height: 3px;
+            background: var(--gray);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .alert-progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+        }
+
+        .alert-success .alert-progress-bar {
+            background: linear-gradient(90deg, var(--success), var(--accent));
+        }
+
+        .alert-error .alert-progress-bar {
+            background: linear-gradient(90deg, var(--danger), var(--warning));
+        }
+
+        .alert-warning .alert-progress-bar {
+            background: linear-gradient(90deg, var(--warning), var(--accent));
+        }
+
+        .alert-info .alert-progress-bar {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
         }
 
         .user-type {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -243,11 +391,72 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .user-option:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
         }
 
         .user-option.active {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
             border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+        }
+
+        .user-option.active::before {
+            opacity: 1;
+        }
+
+        .user-option i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            position: relative;
+            z-index: 2;
+        }
+
+        .user-option .role-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .user-option.active i,
+        .user-option.active .role-name {
+            color: white;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle:hover {
+            color: var(--accent);
         }
 
         @media (max-width: 768px) {
@@ -257,6 +466,12 @@
             
             .user-type {
                 grid-template-columns: 1fr;
+            }
+
+            .doetoez-alert {
+                min-width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
             }
         }
     </style>
@@ -269,64 +484,199 @@
         <div class="bg-circle"></div>
     </div>
 
+    <!-- Doetoez Alert Container -->
+    <div id="alertContainer"></div>
+
     <div class="login-container">
-        <div class="login-header">
-            <div class="logo">
-                <div class="logo-icon"><i class="fas fa-brain"></i></div>
-                <div class="logo-text">Doetoez</div>
-            </div>
-            <h1>Masuk ke Akun Anda</h1>
-            <p>Login untuk mengakses platform pembelajaran Doetoez</p>
-        </div>
-
-        <div class="alert alert-error" id="errorAlert">
-            <i class="fas fa-exclamation-circle"></i> 
-            <span id="errorMessage">Email atau password salah</span>
-        </div>
-
-        <form id="loginForm">
-            <div class="user-type">
-                <div class="user-option active" data-role="student">
-                    <i class="fas fa-user-graduate"></i>
-                    <div>Murid</div>
+        <div class="login-content">
+            <div class="login-header">
+                <div class="logo">
+                    <div class="logo-icon"><i class="fas fa-brain"></i></div>
+                    <div class="logo-text">Doetoez</div>
                 </div>
-                <div class="user-option" data-role="teacher">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <div>Guru</div>
+                <h1>Masuk ke Akun Anda</h1>
+                <p>Login untuk mengakses platform pembelajaran Doetoez</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="user-type">
+                    <div class="user-option active" data-role="student">
+                        <i class="fas fa-user-graduate"></i>
+                        <div class="role-name">Murid</div>
+                    </div>
+                    <div class="user-option" data-role="teacher">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <div class="role-name">Guru</div>
+                    </div>
+                    <div class="user-option" data-role="admin">
+                        <i class="fas fa-user-shield"></i>
+                        <div class="role-name">Admin</div>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="email" placeholder="masukkan email Anda" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="masukkan password" required>
+                    <button type="button" class="password-toggle" id="passwordToggle">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Masuk
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <p>Belum punya akun? <a href="/register" id="registerLink">Daftar di sini</a></p>
             </div>
-
-            <div class="form-group">
-                <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                <input type="email" id="email" placeholder="masukkan email Anda" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password"><i class="fas fa-lock"></i> Password</label>
-                <input type="password" id="password" placeholder="masukkan password" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-sign-in-alt"></i> Masuk
-            </button>
-        </form>
-
-        <div class="login-footer">
-            <p>Belum punya akun? <a href="#" id="registerLink">Hubungi administrator</a></p>
         </div>
     </div>
 
     <script>
-        // Data pengguna yang terdaftar (dalam aplikasi nyata, ini akan disimpan di database)
+        // Data pengguna yang terdaftar dengan data lengkap untuk profile
         const registeredUsers = [
-            { email: "ndiidepzx@doetoez.com", password: "admin123", name: "Achmad Bukhori Rohandi", role: "admin" },
-            { email: "murid2@doetoez.com", password: "password123", name: "Kayla Ajwah Asyifa", role: "student" },
-            { email: "yohanaharapenta@doetoez.com", password: "password123", name: "Yohana Harapenta Purba", role: "teacher" },
-            { email: "pinjydep@doetoez.com", password: "admin123", name: "Administrator", role: "admin" }
+            { 
+                email: "ndiidepzx@doetoez.com", 
+                password: "admin123", 
+                name: "Achmad Bukhori Rohandi", 
+                role: "admin",
+                phone: "+6285800650661",
+                profilePicture: "https://img1.pixhost.to/images/9626/654267024_ndii.jpg",
+                bio: "Ketua Kelas 7F yang aktif dalam teknologi dan seni",
+                joinDate: "2025-10-15T00:00:00Z"
+            },
+            { 
+                email: "yohanaharapenta@doetoez.com", 
+                password: "password123", 
+                name: "Yohana Harapenta Purba", 
+                role: "teacher",
+                phone: "",
+                profilePicture: "https://img1.pixhost.to/images/9690/655082817_ndii.jpg",
+                bio: "Wali Kelas 7F yang berdedikasi dalam pendidikan",
+                joinDate: "2025-10-10T00:00:00Z"
+            },
+            { 
+                email: "murid2@doetoez.com", 
+                password: "password123", 
+                name: "Kayla Ajwah Asyifa", 
+                role: "student",
+                phone: "",
+                profilePicture: "https://img1.pixhost.to/images/9676/654916171_ndii.jpg",
+                bio: "Siswa aktif yang menyukai seni dan matematika",
+                joinDate: "2025-10-20T00:00:00Z"
+            },
+            { 
+                email: "ayuni@doetoez.com", 
+                password: "password123", 
+                name: "Ayuni Fuji Novilianti", 
+                role: "student",
+                phone: "",
+                profilePicture: "https://img1.pixhost.to/images/9677/654939419_ndii.jpg",
+                bio: "Wakil Ketua Kelas yang pandai bergitar",
+                joinDate: "2025-10-18T00:00:00Z"
+            }
         ];
 
         // Variabel untuk menyimpan role yang dipilih
         let selectedRole = "student";
+
+        // Doetoez Alert System
+        class DoetoezAlert {
+            constructor() {
+                this.container = document.getElementById('alertContainer');
+            }
+
+            show(message, type = 'info', duration = 5000) {
+                const alert = document.createElement('div');
+                alert.className = `doetoez-alert alert-${type}`;
+                
+                const icons = {
+                    success: 'fas fa-check-circle',
+                    error: 'fas fa-exclamation-circle',
+                    warning: 'fas fa-exclamation-triangle',
+                    info: 'fas fa-info-circle'
+                };
+
+                alert.innerHTML = `
+                    <div class="alert-header">
+                        <div class="alert-icon">
+                            <i class="${icons[type]}"></i>
+                        </div>
+                        <div>
+                            <div class="alert-title">${this.getTitle(type)}</div>
+                            <div class="alert-message">${message}</div>
+                        </div>
+                    </div>
+                    <div class="alert-progress">
+                        <div class="alert-progress-bar" style="width: 100%"></div>
+                    </div>
+                `;
+
+                this.container.appendChild(alert);
+
+                // Trigger animation
+                setTimeout(() => alert.classList.add('show'), 100);
+
+                // Progress bar animation
+                const progressBar = alert.querySelector('.alert-progress-bar');
+                let width = 100;
+                const interval = setInterval(() => {
+                    width -= (100 / (duration / 50));
+                    progressBar.style.width = width + '%';
+                    
+                    if (width <= 0) {
+                        clearInterval(interval);
+                        this.hide(alert);
+                    }
+                }, 50);
+
+                // Auto hide
+                setTimeout(() => this.hide(alert), duration);
+            }
+
+            getTitle(type) {
+                const titles = {
+                    success: 'Sukses!',
+                    error: 'Error!',
+                    warning: 'Peringatan!',
+                    info: 'Informasi'
+                };
+                return titles[type];
+            }
+
+            hide(alert) {
+                alert.classList.remove('show');
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 500);
+            }
+        }
+
+        // Initialize alert system
+        const doetoezAlert = new DoetoezAlert();
+
+        // Password toggle functionality
+        document.getElementById('passwordToggle').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+                doetoezAlert.show('Password ditampilkan', 'info', 2000);
+            } else {
+                passwordInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        });
 
         // Event listener untuk memilih role
         document.querySelectorAll('.user-option').forEach(option => {
@@ -336,6 +686,8 @@
                 });
                 this.classList.add('active');
                 selectedRole = this.dataset.role;
+                
+                doetoezAlert.show(`Mode ${this.dataset.role} dipilih`, 'info', 2000);
             });
         });
 
@@ -346,42 +698,114 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             
+            // Validasi input
+            if (!email || !password) {
+                doetoezAlert.show('Harap isi email dan password!', 'error');
+                return;
+            }
+            
             // Cari pengguna yang cocok
             const user = registeredUsers.find(u => 
                 u.email === email && 
-                u.password === password && 
-                u.role === selectedRole
+                u.password === password
             );
             
             if (user) {
-                // Simpan data user ke localStorage
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                // Periksa apakah role sesuai
+                if (user.role !== selectedRole) {
+                    const roleName = user.role === 'admin' ? 'Administrator' : 
+                                   user.role === 'teacher' ? 'Guru' : 'Murid';
+                    doetoezAlert.show(`Role tidak sesuai! Silakan pilih role ${roleName}`, 'warning');
+                    return;
+                }
                 
-                // Redirect ke halaman dashboard
-                window.location.href = '/dashboard';
-            } else {
-                // Tampilkan pesan error
-                document.getElementById('errorMessage').textContent = 
-                    "Email, password, atau peran pengguna tidak valid";
-                document.getElementById('errorAlert').style.display = 'block';
+                // Simpan data user ke localStorage dengan data lengkap
+                const userData = {
+                    ...user,
+                    lastLogin: new Date().toISOString(),
+                    firstLogin: user.firstLogin || new Date().toISOString(),
+                    loginCount: (user.loginCount || 0) + 1
+                };
+
+                localStorage.setItem('currentUser', JSON.stringify(userData));
                 
-                // Sembunyikan pesan error setelah 3 detik
+                // Update user data in registeredUsers
+                const userIndex = registeredUsers.findIndex(u => u.email === user.email);
+                if (userIndex !== -1) {
+                    registeredUsers[userIndex] = userData;
+                }
+                
+                // Catat aktivitas login
+                const userActivities = JSON.parse(localStorage.getItem('userActivities') || '[]');
+                userActivities.unshift({
+                    userId: user.email,
+                    userName: user.name,
+                    action: 'login',
+                    actionLabel: 'masuk ke sistem',
+                    timestamp: new Date(),
+                    page: '/login'
+                });
+                localStorage.setItem('userActivities', JSON.stringify(userActivities));
+                
+                // Tampilkan pesan sukses dengan animasi
+                doetoezAlert.show(`Login berhasil! Selamat datang ${user.name}`, 'success');
+                
+                // Animasi loading sebelum redirect
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengarahkan...';
+                submitBtn.disabled = true;
+                
+                // Redirect ke halaman dashboard setelah 2 detik
                 setTimeout(() => {
-                    document.getElementById('errorAlert').style.display = 'none';
-                }, 3000);
+                    window.location.href = '/dashboard';
+                }, 2000);
+                
+            } else {
+                doetoezAlert.show('Email atau password salah!', 'error');
+                
+                // Shake animation untuk form
+                const form = document.getElementById('loginForm');
+                form.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    form.style.animation = '';
+                }, 500);
             }
         });
 
         // Link register
         document.getElementById('registerLink').addEventListener('click', function(e) {
             e.preventDefault();
-            alert("Untuk mendaftar, silakan hubungi administrator kelas 7F di SMPN 279.");
+            doetoezAlert.show('Mengarahkan ke halaman pendaftaran...', 'info', 2000);
+            setTimeout(() => {
+                window.location.href = '/register';
+            }, 1500);
         });
 
         // Jika sudah login, redirect ke dashboard
         if (localStorage.getItem('currentUser')) {
-            window.location.href = '/dashboard'
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            doetoezAlert.show(`Anda sudah login sebagai ${user.name}`, 'info', 3000);
+            setTimeout(() => {
+                window.location.href = '/dashboard';
+            }, 2000);
         }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Auto focus on email input
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('email').focus();
+        });
     </script>
 </body>
 </html>
