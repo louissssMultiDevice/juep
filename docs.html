@@ -677,10 +677,9 @@
         <nav>
             <ul>
                 <li><a href="/dashboard" class="active">Dashboard</a></li>
-                <li><a href="/docs">Data Kelas</a></li>
+                <li><a href="/data">Data Kelas</a></li>
                 <li><a href="/sistem">Sistem</a></li>
                 <li><a href="/ai-juep/chat">AI Chat</a></li>
-                <li><a href="/stats">Statistik</a></li>
             </ul>
         </nav>
         <div class="user-info">
@@ -854,7 +853,7 @@
                 <h3>Tautan Cepat</h3>
                 <ul>
                     <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/docs">Data Kelas</a></li>
+                    <li><a href="/data">Data Kelas</a></li>
                     <li><a href="/sistem">Sistem</a></li>
                     <li><a href="/ai-juep/chat">AI Chat</a></li>
                 </ul>
@@ -1255,7 +1254,7 @@
             // Update UI dengan data user
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('userRole').textContent = translateRole(currentUser.role);
-            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.profilePicture);
             
             // Catat aktivitas login
             dashboardManager.recordUserActivity('page_visit');
