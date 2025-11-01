@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs - Data Siswa & Wali Kelas 7F | Doetoez</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #00d4ff;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f5f5f5;
+            --gray: #2d2d2d;
+            --success: #00e676;
+            --warning: #ffab00;
+            --danger: #ff1744;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animasi latar belakang */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent);
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .bg-circle:nth-child(1) {
+            width: 80vh;
+            height: 80vh;
+            top: -30vh;
+            left: -20vh;
+            animation-delay: 0s;
+        }
+
+        .bg-circle:nth-child(2) {
+            width: 60vh;
+            height: 60vh;
+            top: 60vh;
+            right: -10vh;
+            animation-delay: -5s;
+            background: radial-gradient(circle, var(--secondary), transparent);
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 40vh;
+            height: 40vh;
+            bottom: -10vh;
+            left: 30vh;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--accent), transparent);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-20px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(0) rotate(180deg);
+            }
+            75% {
+                transform: translateY(20px) rotate(270deg);
+            }
+        }
+
+        /* Header dan Navigasi */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a.active {
+            color: var(--accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: transparent;
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 23, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* Konten Utama */
+        main {
+            margin-top: 80px;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: #aaa;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Filter dan Pencarian */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border-radius: 50px;
+            background: var(--gray);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: var(--gray);
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+        }
+
+        /* Grid Kartu */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .profile-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+
+        .profile-card.wali-kelas {
+            border-left: 4px solid var(--accent);
+        }
+
+        .profile-card.siswa {
+            border-left: 4px solid var(--primary);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1.5rem;
+            border: 3px solid var(--accent);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-role {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .role-wali {
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+        }
+
+        .role-siswa {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .profile-ig {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .profile-ig i {
+            margin-right: 0.5rem;
+            color: var(--accent);
+        }
+
+        .profile-details {
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .detail-label {
+            min-width: 100px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        .profile-bio {
+            background: var(--gray);
+            padding: 1rem;
+            border-radius: 10px;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .profile-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: var(--glass);
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 3rem 2rem 2rem;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: right;
+            }
+
+            .user-details {
+                align-items: flex-end;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-photo {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animasi Latar Belakang -->
+    <div class="bg-animation">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fas fa-brain"></i></div>
+            <div class="logo-text">Doetoez</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/docs" class="active">Data Kelas</a></li>
+                <li><a href="/sistem">Sistem</a></li>
+                <li><a href="/ai-juep/chat">AI Chat</a></li>
+            </ul>
+        </nav>
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">
+                <!-- Avatar akan diisi oleh JavaScript -->
+            </div>
+            <div class="user-details">
+                <div class="user-name" id="userName">Pengguna</div>
+                <div class="user-role" id="userRole">Peran</div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main>
+        <div class="page-header">
+            <h1>Data Siswa & Wali Kelas 7F</h1>
+            <p>Informasi lengkap tentang seluruh anggota kelas dalam platform Doetoez</p>
+        </div>
+
+        <!-- Kontrol Pencarian dan Filter -->
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari nama, posisi, atau hobi...">
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="wali">Wali Kelas</button>
+                <button class="filter-btn" data-filter="siswa">Siswa</button>
+            </div>
+        </div>
+
+        <!-- Grid Kartu Profil -->
+        <div class="cards-grid" id="profilesContainer">
+            <!-- Data akan diisi oleh JavaScript -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Doetoez</h3>
+                <p>Platform pembelajaran futuristik dengan AI canggih untuk membantu Anda mencapai potensi maksimal.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Tautan Cepat</h3>
+                <ul>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/docs">Data Kelas</a></li>
+                    <li><a href="/sistem">Sistem</a></li>
+                    <li><a href="/ai-juep/chat">AI Chat</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Lokasi</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Jakarta, Indonesia</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Ikuti Kami</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-whatsapp"></i> Saluran WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 — Doetoez. Semua hak dilindungi. Dibuat oleh Handii.
+        </div>
+    </footer>
+
+    <script>
+        // Data dummy siswa dan wali kelas
+        const profilesData = [
+            {
+                id: 1,
+                nama: "Yohana Harapenta Purba",
+                posisi: "Wali Kelas",
+                tanggal_lahir: "8-30-1996",
+                bio: "Apapun yang kamu lakukan, lalukan seperti untuk tuhan bukan untuk maunsia.",
+                hobi: "Mendengarkan musik dan mengajar",
+                ig: "yohanaharapenta",
+                foto: "https://img1.pixhost.to/images/9690/655082817_ndii.jpg",
+                role: "wali"
+            },
+            {
+                id: 2,
+                nama: "Achmad Bukhori Rohandi",
+                posisi: "Ketua Kelas",
+                tanggal_lahir: "12-11-2011",
+                bio: "Siswa aktif yang berperan penting dan senang mempelajari hal baru, terutama di bidang teknologi dan seni. Berkomitmen untuk membantu teman sekelas, sekitar, dan menciptakan hal baru yang religius dengan ide baru yang kreatif.",
+                hobi: "Basket, Coding, Musik",
+                ig: "its_me.ndii",
+                foto: "https://img1.pixhost.to/images/9626/654267024_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 3,
+                nama: "Ayuni Fuji Novilianti",
+                posisi: "Wakil Ketua Kelas",
+                tanggal_lahir: "11-13-2011",
+                bio: "Saya ingin menjadi pribadi yang lebih baik untuk membantu lingkungan di sekitar saya maupun diri saya sendiri.",
+                hobi: "Bermain gitar dan bernyanyi.",
+                ig: "without bio",
+                foto: "https://img1.pixhost.to/images/9677/654939419_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 4,
+                nama: "Ashra Syifa Fauzi",
+                posisi: "Sekretaris 1",
+                tanggal_lahir: "11-12-2011",
+                bio: "Bertanggung jawab mengelola informasi kelas, asli dari lahir.",
+                hobi: "Menghabiskan Uang",
+                ig: "ashra_syifa",
+                foto: "https://img1.pixhost.to/images/9676/654909307_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 5,
+                nama: "Asyifa Chaerani",
+                posisi: "Sekretaris 2",
+                tanggal_lahir: "09-05-2011",
+                bio: "Cool, soft spoken",
+                hobi: "Main Roblox",
+                ig: "anotherchips7",
+                foto: "https://img1.pixhost.to/images/9676/654910900_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 6,
+                nama: "Apriliazahra Rachman",
+                posisi: "Humas",
+                tanggal_lahir: "04-26-2012",
+                bio: "Keep fighting to get a class that is more respected and keep learning for a more beautiful future.",
+                hobi: "Bernyanyi",
+                ig: "zz_xxrra",
+                foto: "https://img1.pixhost.to/images/9676/654909270_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 7,
+                nama: "Kayla Ajwah Asyifa",
+                posisi: "Bendahara",
+                tanggal_lahir: "09-06-2012",
+                bio: "I love you and its killing me.",
+                hobi: "3G — Gambar, gabut, gila.",
+                ig: "kayk_ay6363",
+                foto: "https://img1.pixhost.to/images/9676/654916171_ndii.jpg",
+                role: "siswa"
+            },
+            {
+                id: 8,
+                nama: "Kanza Fanadilla",
+                posisi: "Humas",
+                tanggal_lahir: "06-25-2011",
+                bio: "Deym",
+                hobi: "Basket, Badminton, Taekwondo",
+                ig: "onepdie",
+                foto: "https://img1.pixhost.to/images/9676/654916651_ndii.jpg",
+                role: "siswa"
+            },
+        ];
+
+        // Ambil data user dari localStorage
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+        // Jika tidak ada user yang login, redirect ke halaman login
+        if (!currentUser) {
+            window.location.href = '/login.html';
+        }
+
+        // Fungsi untuk mendapatkan inisial nama
+        function getInitials(name) {
+            return name.split(' ').map(word => word[0]).join('').toUpperCase();
+        }
+
+        // Fungsi untuk menerjemahkan role
+        function translateRole(role) {
+            const roleMap = {
+                'admin': 'Administrator',
+                'student': 'Murid',
+                'teacher': 'Guru'
+            };
+            return roleMap[role] || role;
+        }
+
+        // Fungsi untuk memformat tanggal
+        function formatTanggal(tanggal) {
+            const date = new Date(tanggal);
+            return date.toLocaleDateString('id-ID', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Fungsi untuk membuat kartu profil
+        function createProfileCard(profile) {
+            const card = document.createElement('div');
+            card.className = `profile-card ${profile.role}`;
+            card.dataset.role = profile.role;
+            
+            const roleClass = profile.role === 'wali' ? 'role-wali' : 'role-siswa';
+            const roleText = profile.role === 'wali' ? 'Wali Kelas' : 'Siswa';
+            
+            card.innerHTML = `
+                <div class="profile-header">
+                    <div class="profile-photo">
+                        <img src="${profile.foto}" alt="${profile.nama}">
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name">${profile.nama}</div>
+                        <div class="profile-role ${roleClass}">${roleText}</div>
+                        <div class="profile-ig">
+                            <i class="fab fa-instagram"></i> @${profile.ig}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Posisi:</div>
+                        <div class="detail-value">${profile.posisi}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Tanggal Lahir:</div>
+                        <div class="detail-value">${formatTanggal(profile.tanggal_lahir)}</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Hobi:</div>
+                        <div class="detail-value">${profile.hobi}</div>
+                    </div>
+                </div>
+                
+                <div class="profile-bio">
+                    "${profile.bio}"
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="action-btn">
+                        <i class="fas fa-envelope"></i> Kirim Pesan
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-share-alt"></i> Bagikan
+                    </button>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Fungsi untuk memuat semua profil
+        function loadProfiles() {
+            const container = document.getElementById('profilesContainer');
+            container.innerHTML = '';
+            
+            profilesData.forEach(profile => {
+                const card = createProfileCard(profile);
+                container.appendChild(card);
+            });
+        }
+
+        // Fungsi untuk memfilter profil
+        function filterProfiles(filter) {
+            const cards = document.querySelectorAll('.profile-card');
+            
+            cards.forEach(card => {
+                if (filter === 'all' || card.dataset.role === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Fungsi untuk mencari profil
+        function searchProfiles(query) {
+            const cards = document.querySelectorAll('.profile-card');
+            const lowerQuery = query.toLowerCase();
+            
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(lowerQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update UI dengan data user
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userRole').textContent = translateRole(currentUser.role);
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/login.html';
+            });
+            
+            // Muat profil saat halaman dimuat
+            loadProfiles();
+            
+            // Filter button event listeners
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    filterProfiles(filter);
+                });
+            });
+            
+            // Search input event listener
+            document.getElementById('searchInput').addEventListener('input', function() {
+                searchProfiles(this.value);
+            });
+        });
+
+        // Animasi untuk kartu saat hover
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.profile-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
