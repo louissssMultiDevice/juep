@@ -572,43 +572,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Recent Activity -->
-        <section class="activity-section">
-            <h2 class="section-title">Aktivitas Terbaru</h2>
-            <ul class="activity-list">
-                <li class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Materi Matematika Baru</div>
-                        <div class="activity-desc">Materi tentang aljabar telah ditambahkan</div>
-                    </div>
-                    <div class="activity-time">2 jam lalu</div>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Kuis Selesai</div>
-                        <div class="activity-desc">Anda telah menyelesaikan kuis IPA dengan nilai 85</div>
-                    </div>
-                    <div class="activity-time">1 hari lalu</div>
-                </li>
-                <li class="activity-item">
-                    <div class="activity-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Diskusi Kelas</div>
-                        <div class="activity-desc">Ada 5 pesan baru dalam diskusi kelas Bahasa Indonesia</div>
-                    </div>
-                    <div class="activity-time">2 hari lalu</div>
-                </li>
-            </ul>
-        </section>
     </main>
 
     <!-- Footer -->
@@ -622,7 +585,7 @@
                 <h3>Tautan Cepat</h3>
                 <ul>
                     <li><a href="/dashboard">Dashboard</a></li>
-                    <li><a href="/docs">Data Kelas</a></li>
+                    <li><a href="/data">Data Kelas</a></li>
                     <li><a href="/sistem">Sistem</a></li>
                     <li><a href="/ai-juep/chat">AI Chat</a></li>
                 </ul>
@@ -675,7 +638,7 @@
             // Update header
             document.getElementById('userName').textContent = currentUser.name;
             document.getElementById('userRole').textContent = translateRole(currentUser.role);
-            document.getElementById('userAvatar').textContent = getInitials(currentUser.name);
+            document.getElementById('userAvatar').textContent = getInitials(currentUser.profilePicture);
             
             // Update welcome section
             document.getElementById('welcomeTitle').textContent = `Selamat Datang, ${currentUser.name}!`;
